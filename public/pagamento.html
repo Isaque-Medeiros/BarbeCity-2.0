@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pagamento · Barbe City Jaraguá</title>
+  <meta name="description" content="Escolha a forma de pagamento e confirme seu agendamento na Barbe City Jaraguá.">
+  <meta name="theme-color" content="#0b0b0c">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <script src="/js/theme-init.js"></script>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+  <div id="site-header"></div>
+  <main id="conteudo">
+    <div class="container">
+      <div class="page-head">
+        <a class="voltar" href="/confirmacao.html"><svg class="icon"><use href="#i-chevron-left"></use></svg> Voltar aos dados</a>
+        <span class="eyebrow">Agendamento · passo 3 de 3</span>
+        <h1>Como você prefere pagar?</h1>
+        <p>Escolha a forma de pagamento. O horário será reservado ao confirmar.</p>
+        <div class="passos">
+          <span class="passo is-feito"><span class="passo-num">✓</span><span>Serviço</span></span>
+          <span class="passo-linha"></span>
+          <span class="passo is-feito"><span class="passo-num">✓</span><span>Seus dados</span></span>
+          <span class="passo-linha"></span>
+          <span class="passo is-ativo"><span class="passo-num">3</span><span>Pagamento</span></span>
+        </div>
+      </div>
+
+      <div class="checkout-grid">
+        <form id="form-pagamento" class="panel" novalidate>
+          <div class="painel-titulo">
+            <h2>Forma de pagamento</h2>
+            <span class="badge badge-gold">Seguro</span>
+          </div>
+
+          <div class="pagamento-opcoes">
+            <label class="pagamento-opcao" data-metodo="pix">
+              <input type="radio" name="metodo" value="pix" checked>
+              <span class="pagamento-icone"><svg class="icon"><use href="#i-pix"></use></svg></span>
+              <span><strong>Pix</strong><span>Pague agora pelo QR Code ou no local</span></span>
+            </label>
+            <label class="pagamento-opcao" data-metodo="dinheiro">
+              <input type="radio" name="metodo" value="dinheiro">
+              <span class="pagamento-icone"><svg class="icon"><use href="#i-cash"></use></svg></span>
+              <span><strong>Dinheiro</strong><span>Informe a nota e veja o troco</span></span>
+            </label>
+            <label class="pagamento-opcao" data-metodo="cartao">
+              <input type="radio" name="metodo" value="cartao">
+              <span class="pagamento-icone"><svg class="icon"><use href="#i-card"></use></svg></span>
+              <span><strong>Cartão</strong><span>Pague na maquininha no local</span></span>
+            </label>
+          </div>
+
+          <div class="pagamento-extra" id="extra-dinheiro" hidden>
+            <h4>Pagamento em dinheiro</h4>
+            <div class="field" style="margin-bottom:10px;">
+              <label class="label" for="nota-dinheiro">Nota que você vai usar</label>
+              <input class="input" id="nota-dinheiro" type="number" min="0" step="0.01" placeholder="Ex.: 100,00">
+            </div>
+            <label class="checkbox"><input type="checkbox" id="troco-pix"> Aceito receber o troco via Pix</label>
+            <div id="troco-preview"></div>
+          </div>
+
+          <div class="pagamento-extra" id="extra-cartao" hidden>
+            <h4>Cartão</h4>
+            <p class="hint" style="margin:0;">O pagamento é feito na maquininha da barbearia, no dia do atendimento. Nenhuma cobrança online será feita agora.</p>
+          </div>
+
+          <div class="pagamento-extra" id="extra-pix">
+            <h4>Quando você quer pagar o Pix?</h4>
+            <div class="pix-escolha">
+              <label data-pix-opcao="true" class="is-selecionado">
+                <input type="radio" name="pagarAgora" value="true" checked>
+                <strong>Pagar agora</strong>
+                <span>Gera o QR Code e confirma automaticamente</span>
+              </label>
+              <label data-pix-opcao="false">
+                <input type="radio" name="pagarAgora" value="false">
+                <strong>Pagar na hora</strong>
+                <span>Pague no Pix quando chegar</span>
+              </label>
+            </div>
+          </div>
+
+          <div style="margin-top:20px;">
+            <label class="checkbox">
+              <input type="checkbox" id="aceite-pagamento" required>
+              <span>Li e aceito a <a href="/privacidade.html" target="_blank" rel="noopener">política de privacidade</a> e confirmo que os dados estão corretos.</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg btn-block" id="btn-confirmar" style="margin-top:18px;">
+            <svg class="icon"><use href="#i-check"></use></svg> Confirmar agendamento
+          </button>
+          <p class="hint" style="text-align:center;margin-top:10px;">Se o horário for reservado por outra pessoa enquanto você finaliza, você será avisado para escolher outro.</p>
+        </form>
+
+        <aside class="resumo">
+          <h2>Resumo</h2>
+          <div id="resumo-pagamento"></div>
+          <p class="resumo-obs">O código de confirmação será exibido na próxima tela. Guarde-o para consultar ou cancelar.</p>
+        </aside>
+      </div>
+
+      <div class="pix-painel" id="pix-painel" hidden></div>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <script type="module" src="/js/layout.js"></script>
+  <script type="module" src="/js/pagamento.js"></script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Serviços · Barbe City Jaraguá</title>
+  <meta name="description" content="Escolha entre corte, barba, sobrancelha, combos, luzes, hidratação e botox capilar. Agende na Barbe City Jaraguá.">
+  <meta name="theme-color" content="#0b0b0c">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <script src="/js/theme-init.js"></script>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+  <div id="site-header"></div>
+  <main id="conteudo">
+    <div class="container">
+      <div class="page-head">
+        <a class="voltar" href="/"><svg class="icon"><use href="#i-chevron-left"></use></svg> Voltar ao início</a>
+        <span class="eyebrow">Agendamento · passo 1 de 3</span>
+        <h1>Escolha seu serviço</h1>
+        <p>Selecione o cuidado principal e, se quiser, adicione extras. O valor e a duração são calculados automaticamente.</p>
+        <div class="passos">
+          <span class="passo is-ativo"><span class="passo-num">1</span><span>Serviço</span></span>
+          <span class="passo-linha"></span>
+          <span class="passo"><span class="passo-num">2</span><span>Seus dados</span></span>
+          <span class="passo-linha"></span>
+          <span class="passo"><span class="passo-num">3</span><span>Pagamento</span></span>
+        </div>
+      </div>
+
+      <section id="etapa-servico" aria-labelledby="titulo-servicos">
+        <div class="servicos-layout">
+          <div class="servicos-lista">
+            <div class="tabs" role="tablist" aria-label="Categorias de serviço">
+              <button type="button" class="tab is-active" data-filtro="todos" role="tab">Todos</button>
+              <button type="button" class="tab" data-filtro="individual" role="tab">Individuais</button>
+              <button type="button" class="tab" data-filtro="combo" role="tab">Combos</button>
+              <button type="button" class="tab" data-filtro="outros" role="tab">Tratamentos</button>
+            </div>
+            <div class="cards-servicos" id="lista-servicos">
+              <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+            </div>
+            <div id="adicionais"></div>
+          </div>
+          <aside class="avatar-preview" id="avatar-preview" aria-live="polite">
+            <div class="avatar-preview-vazio">
+              <strong>Seu visual</strong>
+              <span>Escolha um serviço para ver o avatar.</span>
+            </div>
+          </aside>
+        </div>
+        <div class="barra-resumo" id="barra-resumo">
+          <span class="muted">Escolha um serviço para continuar.</span>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <script type="module" src="/js/layout.js"></script>
+  <script type="module" src="/js/servicos.js"></script>
+</body>
+</html>

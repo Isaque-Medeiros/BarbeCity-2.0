@@ -1,0 +1,24 @@
+# Dependências
+node_modules/
+
+# Segredos — NUNCA commitar
+.env
+.env.*.local
+
+# Dados pessoais de clientes (LGPD) — NUNCA commitar
+agendamentos.json
+legacy/agendamentos.json
+
+# Logs e temporários
+*.log
+.DS_Store
+Thumbs.db
+*.tmp
+tmp/
+
+# Vercel
+.vercel/
+
+# Cobertura/testes
+coverage/
+

@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Barbe City Jaraguá — Barbearia Premium em São Paulo</title>
+  <meta name="description" content="Barbe City Jaraguá: tradição e estilo em cada corte. Agende seu horário com Anderson Barbeiro — R. Jairo de Almeida Machado, 220, Jaraguá/SP.">
+  <meta name="theme-color" content="#0b0b0c">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <script src="/js/theme-init.js"></script>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main id="conteudo">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Barbearia Premium · Jaraguá/SP</span>
+          <h1>Barbe City <span>Jaraguá</span></h1>
+          <p class="hero-lead">
+            Tradição e estilo em cada corte. Aqui, cada visita é uma experiência de cuidado,
+            com produtos profissionais e um atendimento feito para o seu visual.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary btn-lg" href="/servicos.html">Agendar horário</a>
+            <a class="btn btn-outline btn-lg" href="#servicos">Ver serviços</a>
+            <a class="btn btn-ghost btn-lg" href="/consultar.html">Meu agendamento</a>
+          </div>
+          <div class="hero-chips">
+            <span class="hero-chip"><svg class="icon"><use href="#i-map-pin"></use></svg><span id="hero-endereco">R. Jairo de Almeida Machado, 220 — Jaraguá</span></span>
+            <span class="hero-chip"><svg class="icon"><use href="#i-phone"></use></svg><span id="hero-telefone">(11) 91504-0871</span></span>
+            <span class="hero-chip"><svg class="icon"><use href="#i-clock"></use></svg><span id="hero-horario">Ter a Sex: 13h às 20h · Sáb e Dom: 09h às 20h</span></span>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-emblem">
+            <img src="/assets/logo.svg" alt="Emblema Barbe City Jaraguá" width="500" height="500">
+          </div>
+          <div class="hero-float hero-float-a">
+            <svg class="icon"><use href="#i-scissors"></use></svg>
+            <span>Corte + Barba <strong class="gold">R$ 50</strong></span>
+          </div>
+          <div class="hero-float hero-float-b">
+            <svg class="icon"><use href="#i-star"></use></svg>
+            <span>Anderson Barbeiro</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft" id="servicos">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Nossos serviços</span>
+            <h2>Cortes, barba e cuidados</h2>
+            <p>Escolha o serviço que combina com você. Todos os valores e durações são atualizados direto pelo painel da barbearia.</p>
+          </div>
+          <a class="btn btn-gold" href="/servicos.html">Ver todos os serviços</a>
+        </div>
+        <div class="cards-servicos" id="servicos-destaque">
+          <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        </div>
+        <p class="hint" id="total-servicos" style="margin-top:16px;"></p>
+      </div>
+    </section>
+
+
+    <section class="section" id="sobre">
+      <div class="container sobre-grid">
+        <div class="sobre-visual">
+          <img src="/assets/logo.svg" alt="Barbe City Jaraguá" width="500" height="500">
+          <span class="sobre-selo"><svg class="icon"><use href="#i-shield"></use></svg> Anderson Barbeiro</span>
+        </div>
+        <div>
+          <span class="eyebrow">Sobre nós</span>
+          <h2>Tradição &amp; excelência</h2>
+          <p class="muted" id="sobre-texto">
+            Anderson Barbeiro transforma o visual dos clientes com cortes modernos e tradicionais.
+            Na Barbe City Jaraguá, cada visita é uma experiência única de cuidado e estilo.
+          </p>
+          <ul class="lista-valores">
+            <li><svg class="icon"><use href="#i-scissors"></use></svg> Cortes modernos e clássicos</li>
+            <li><svg class="icon"><use href="#i-razor"></use></svg> Barba com toalha quente</li>
+            <li><svg class="icon"><use href="#i-eyebrow"></use></svg> Design de sobrancelha</li>
+            <li><svg class="icon"><use href="#i-sparkles"></use></svg> Combos exclusivos</li>
+          </ul>
+          <div class="hero-actions" style="margin-top:24px;">
+            <a class="btn btn-primary" href="/servicos.html">Agendar agora</a>
+            <a class="btn btn-outline" href="#contato">Falar com a barbearia</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="container">
+        <div class="section-head centro">
+          <span class="eyebrow centro">Por que a Barbe City</span>
+          <h2>Uma experiência do início ao fim</h2>
+          <p>Do agendamento ao acabamento, tudo pensado para você sair satisfeito.</p>
+        </div>
+        <div class="cards-diferenciais">
+          <article class="diferencial">
+            <svg class="icon"><use href="#i-calendar"></use></svg>
+            <h3>Agendamento online</h3>
+            <p>Escolha o serviço, a data e o horário em poucos passos, sem ligação.</p>
+          </article>
+          <article class="diferencial">
+            <svg class="icon"><use href="#i-clock"></use></svg>
+            <h3>Horário respeitado</h3>
+            <p>Agenda organizada por duração real do serviço, com confirmação imediata.</p>
+          </article>
+          <article class="diferencial">
+            <svg class="icon"><use href="#i-pix"></use></svg>
+            <h3>Pagamento facilitado</h3>
+            <p>Dinheiro, cartão ou Pix — pague no local ou antecipe pelo site.</p>
+          </article>
+          <article class="diferencial">
+            <svg class="icon"><use href="#i-whatsapp"></use></svg>
+            <h3>Contato direto</h3>
+            <p>Fale com a barbearia pelo WhatsApp e acompanhe seu agendamento.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Nosso espaço</span>
+            <h2>Onde o estilo acontece</h2>
+            <p>Um ambiente pensado para você relaxar e sair com o visual renovado.</p>
+          </div>
+        </div>
+        <div class="galeria">
+          <div class="galeria-item"><svg class="icon"><use href="#i-image"></use></svg><span>Ambiente</span></div>
+          <div class="galeria-item"><svg class="icon"><use href="#i-scissors"></use></svg><span>Detalhes</span></div>
+          <div class="galeria-item"><svg class="icon"><use href="#i-razor"></use></svg><span>Ferramentas</span></div>
+        </div>
+        <p class="hint" style="margin-top:12px;">Novas fotos do espaço serão adicionadas em breve.</p>
+      </div>
+    </section>
+
+    <section class="versiculo">
+      <div class="container">
+        <span class="cruz"><svg class="icon"><use href="#i-cross"></use></svg></span>
+        <blockquote id="versiculo-texto">“Porque nele vivemos, e nos movemos, e existimos.”</blockquote>
+        <cite id="versiculo-ref">Atos 17:28</cite>
+      </div>
+    </section>
+
+    <section class="section" id="contato">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Contato</span>
+            <h2>Encontre a gente</h2>
+            <p>Estamos no Jaraguá, pertinho de você. Venha tomar um café e cuidar do visual.</p>
+          </div>
+          <a class="btn btn-gold" id="link-whatsapp" href="https://wa.me/5511915040871" target="_blank" rel="noopener">Chamar no WhatsApp</a>
+        </div>
+        <div class="contato-grid">
+          <div class="admin-card">
+            <h3>Endereço</h3>
+            <p class="muted" id="contato-endereco">R. Jairo de Almeida Machado, 220 — Jaraguá, São Paulo — SP</p>
+            <p class="muted">Próximo à ETEC Jaraguá.</p>
+            <div class="divisor"></div>
+            <h3>Telefone</h3>
+            <p><a id="link-telefone" href="tel:+5511915040871"><span id="contato-telefone">(11) 91504-0871</span></a></p>
+            <div class="divisor"></div>
+            <h3>Horários</h3>
+            <p class="muted" id="contato-horario">Ter a Sex: 13h às 20h · Sáb e Dom: 09h às 20h</p>
+            <p class="hint">Segunda-feira fechado.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
+              <a class="btn btn-primary" href="/servicos.html">Agendar horário</a>
+              <a class="btn btn-outline" href="/consultar.html">Consultar agendamento</a>
+            </div>
+          </div>
+          <div class="mapa">
+            <iframe id="mapa-embed" title="Mapa da Barbe City Jaraguá" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="container center">
+        <span class="eyebrow centro">Pronto para renovar o visual?</span>
+        <h2>Seu próximo corte começa aqui</h2>
+        <p class="muted" style="max-width:560px;margin:0 auto 24px;">Agende em menos de um minuto. Você recebe o código de confirmação e pode consultar ou cancelar quando quiser.</p>
+        <div class="hero-actions" style="justify-content:center;">
+          <a class="btn btn-primary btn-lg" href="/servicos.html">Agendar meu horário</a>
+          <a class="btn btn-outline btn-lg" href="https://wa.me/5511915040871?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20hor%C3%A1rios." target="_blank" rel="noopener" data-wa-link="Olá! Gostaria de saber mais sobre os horários.">Falar no WhatsApp</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script type="module" src="/js/layout.js"></script>
+  <script type="module" src="/js/landing.js"></script>
+</body>
+</html>
+

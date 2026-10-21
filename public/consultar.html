@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meu agendamento · Barbe City Jaraguá</title>
+  <meta name="description" content="Consulte ou cancele seu agendamento na Barbe City Jaraguá usando o código e o telefone informados.">
+  <meta name="theme-color" content="#0b0b0c">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <script src="/js/theme-init.js"></script>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+  <div id="site-header"></div>
+  <main id="conteudo">
+    <div class="container">
+      <div class="page-head">
+        <span class="eyebrow">Consulta rápida</span>
+        <h1>Meu agendamento</h1>
+        <p>Use o código de 10 caracteres que você recebeu e o telefone informado no agendamento.</p>
+      </div>
+
+      <div class="checkout-grid">
+        <div class="panel">
+          <h2>Buscar horário</h2>
+          <form id="form-consulta">
+            <div class="field">
+              <label class="label" for="codigo">Código do agendamento</label>
+              <input class="input" id="codigo" name="codigo" required minlength="6" maxlength="20" autocomplete="off" placeholder="Ex.: db293c8dd1">
+            </div>
+            <div class="field">
+              <label class="label" for="telefone">Telefone informado</label>
+              <input class="input" id="telefone" name="telefone" type="tel" required autocomplete="tel" placeholder="(11) 99999-9999">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Consultar agendamento</button>
+          </form>
+          <p class="hint" style="margin-top:14px;">Não encontrou o código? Fale com a barbearia pelo WhatsApp <a href="https://wa.me/5511915040871" target="_blank" rel="noopener">(11) 91504-0871</a>.</p>
+        </div>
+
+        <div id="resultado-consulta">
+          <div class="empty">
+            <div class="empty-icon"><svg class="icon"><use href="#i-search"></use></svg></div>
+            <h3>Seu horário aparece aqui</h3>
+            <p>Digite o código e o telefone para ver os detalhes, o status do pagamento e, se precisar, cancelar.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <script type="module" src="/js/layout.js"></script>
+  <script type="module" src="/js/consultar.js"></script>
+</body>
+</html>

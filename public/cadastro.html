@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Criar conta · Barbe City Jaraguá</title>
+  <meta name="description" content="Crie sua conta na Barbe City Jaraguá e agende seu horário com mais praticidade.">
+  <meta name="theme-color" content="#0b0b0c">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <script src="/js/theme-init.js"></script>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+  <div id="site-header"></div>
+  <main id="conteudo" class="auth-shell">
+    <aside class="auth-aside">
+      <img src="/assets/logo.svg" alt="Barbe City Jaraguá">
+      <span class="eyebrow">Bem-vindo à casa</span>
+      <h2>Mais praticidade para cuidar do visual.</h2>
+      <p>Crie sua conta para ter seus dados salvos, acompanhar o histórico e reservar horários em segundos.</p>
+      <ul class="auth-lista">
+        <li><svg class="icon"><use href="#i-check"></use></svg> Agendamento sem preencher tudo de novo</li>
+        <li><svg class="icon"><use href="#i-clock"></use></svg> Histórico e próximos horários</li>
+        <li><svg class="icon"><use href="#i-pix"></use></svg> Pagamento no local ou pelo site</li>
+      </ul>
+    </aside>
+
+    <div class="auth-main">
+      <div class="auth-card">
+        <h1>Criar conta</h1>
+        <p>É rápido e você pode agendar logo em seguida.</p>
+
+        <a class="btn btn-google" href="/api/auth/google">
+          <svg class="icon"><use href="#i-google"></use></svg> Criar com Google
+        </a>
+
+        <div class="auth-divisor">ou com e-mail</div>
+
+        <form id="form-cadastro">
+          <div class="field">
+            <label class="label" for="cadastro-nome">Nome completo</label>
+            <input class="input" id="cadastro-nome" name="nome" required minlength="2" autocomplete="name" placeholder="Seu nome">
+          </div>
+          <div class="field">
+            <label class="label" for="cadastro-email">E-mail</label>
+            <input class="input" id="cadastro-email" name="email" type="email" required autocomplete="email" placeholder="voce@email.com">
+          </div>
+          <div class="field">
+            <label class="label" for="cadastro-telefone">WhatsApp / telefone (opcional)</label>
+            <input class="input" id="cadastro-telefone" name="telefone" type="tel" autocomplete="tel" placeholder="(11) 99999-9999">
+          </div>
+          <div class="form-grade">
+            <div class="field">
+              <label class="label" for="cadastro-senha">Senha</label>
+              <input class="input" id="cadastro-senha" name="senha" type="password" required minlength="8" autocomplete="new-password">
+              <span class="hint">Mínimo de 8 caracteres, com letra e número.</span>
+            </div>
+            <div class="field">
+              <label class="label" for="cadastro-confirmar">Confirmar senha</label>
+              <input class="input" id="cadastro-confirmar" name="confirmarSenha" type="password" required minlength="8" autocomplete="new-password">
+            </div>
+          </div>
+          <label class="checkbox" style="margin:6px 0 18px;">
+            <input type="checkbox" name="aceitePrivacidade" required>
+            <span>Li e aceito a <a href="/privacidade.html" target="_blank" rel="noopener">política de privacidade</a> e o tratamento dos meus dados.</span>
+          </label>
+          <button type="submit" class="btn btn-primary btn-block">Criar minha conta</button>
+        </form>
+
+        <p style="margin-top:16px;font-size:.86rem;text-align:center;">Já tem conta? <a href="/login.html">Entrar</a></p>
+      </div>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <script type="module" src="/js/layout.js"></script>
+  <script type="module" src="/js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Barbe City Jaraguá">
+  <defs>
+    <linearGradient id="ouro" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f0d47a"/>
+      <stop offset=".5" stop-color="#d4af37"/>
+      <stop offset="1" stop-color="#a47d1c"/>
+    </linearGradient>
+    <clipPath id="poste"><rect x="9" y="19" width="10" height="26" rx="5"/></clipPath>
+  </defs>
+  <circle cx="32" cy="32" r="30.4" fill="#141416" stroke="url(#ouro)" stroke-width="1.6"/>
+  <circle cx="32" cy="32" r="25.6" fill="none" stroke="#d4af37" stroke-opacity=".28" stroke-width=".8" stroke-dasharray="2 3"/>
+
+  <g clip-path="url(#poste)">
+    <rect x="9" y="19" width="10" height="26" fill="#f4f1ea"/>
+    <path d="M9 21l10-4v6L9 27zm0 9l10-4v6L9 36zm0 9l10-4v6L9 45z" fill="#b91c1c"/>
+    <path d="M9 26l10-4v4L9 30zm0 9l10-4v4L9 39z" fill="#1e4f9c"/>
+    <rect x="9" y="19" width="10" height="26" fill="none" stroke="#8c8c8c" stroke-width=".6"/>
+  </g>
+  <circle cx="14" cy="17.5" r="2.4" fill="#c9ced1" stroke="#777" stroke-width=".5"/>
+  <circle cx="14" cy="46.5" r="2.4" fill="#c9ced1" stroke="#777" stroke-width=".5"/>
+
+  <g fill="none" stroke="url(#ouro)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="translate(24,15) scale(.78)">
+    <circle cx="6" cy="6" r="3.4"/>
+    <circle cx="6" cy="22" r="3.4"/>
+    <path d="M8.6 8.4 25 23M8.6 19.6 25 5"/>
+    <path d="m13.5 14.5 11.5 8.5"/>
+  </g>
+
+  <text x="38" y="42" font-family="Georgia, 'Times New Roman', serif" font-size="18" font-weight="bold" fill="url(#ouro)" text-anchor="middle" letter-spacing=".5">BC</text>
+</svg>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Confirmar horário · Barbe City Jaraguá</title>
+  <meta name="description" content="Escolha a data e o horário do seu atendimento na Barbe City Jaraguá.">
+  <meta name="theme-color" content="#0b0b0c">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <script src="/js/theme-init.js"></script>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+  <div id="site-header"></div>
+  <main id="conteudo">
+    <div class="container">
+      <div class="page-head">
+        <a class="voltar" href="/servicos.html"><svg class="icon"><use href="#i-chevron-left"></use></svg> Trocar serviço</a>
+        <span class="eyebrow">Agendamento · passo 2 de 3</span>
+        <h1>Data, horário e seus dados</h1>
+        <p>Escolha o melhor dia e horário. Se você já tem conta, seus dados aparecem preenchidos.</p>
+        <div class="passos">
+          <span class="passo is-feito"><span class="passo-num">✓</span><span>Serviço</span></span>
+          <span class="passo-linha"></span>
+          <span class="passo is-ativo"><span class="passo-num">2</span><span>Seus dados</span></span>
+          <span class="passo-linha"></span>
+          <span class="passo"><span class="passo-num">3</span><span>Pagamento</span></span>
+        </div>
+      </div>
+
+      <div class="checkout-grid">
+        <div>
+          <div class="agenda-painel">
+            <div class="painel-titulo">
+              <h2>Escolha a data</h2>
+              <span class="badge badge-gold">Agenda atualizada</span>
+            </div>
+            <div id="calendario"></div>
+            <div class="divisor"></div>
+            <div class="painel-titulo"><h2>Horários disponíveis</h2></div>
+            <div id="horarios"></div>
+          </div>
+
+          <form id="form-confirmacao" class="panel" style="margin-top:18px;" novalidate>
+            <div class="painel-titulo">
+              <h2>Seus dados</h2>
+              <span class="hint sr-only" id="aviso-logado">Preenchido com sua conta</span>
+            </div>
+            <div class="form-grade">
+              <div class="field campo-largo">
+                <label class="label" for="campo-nome">Nome completo</label>
+                <input class="input" id="campo-nome" name="nome" required minlength="2" autocomplete="name" placeholder="Como devemos chamar você?">
+              </div>
+              <div class="field">
+                <label class="label" for="campo-telefone">WhatsApp / telefone</label>
+                <input class="input" id="campo-telefone" name="telefone" type="tel" required autocomplete="tel" placeholder="(11) 99999-9999">
+              </div>
+              <div class="field">
+                <label class="label" for="campo-email">E-mail (opcional)</label>
+                <input class="input" id="campo-email" name="email" type="email" autocomplete="email" placeholder="voce@email.com">
+              </div>
+              <div class="field campo-largo">
+                <label class="label" for="campo-observacao">Observação (opcional)</label>
+                <textarea class="textarea" id="campo-observacao" name="observacao" maxlength="400" placeholder="Alguma preferência ou informação que o barbeiro deve saber?"></textarea>
+              </div>
+              <label class="checkbox campo-largo">
+                <input type="checkbox" name="aceitePrivacidade" required>
+                <span>Li e aceito a <a href="/privacidade.html" target="_blank" rel="noopener">política de privacidade</a> e o uso dos meus dados para este agendamento.</span>
+              </label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-top:18px;">Continuar para pagamento</button>
+            <button type="button" class="btn btn-ghost btn-block" id="voltar-servicos" style="margin-top:8px;">Trocar serviço</button>
+          </form>
+        </div>
+
+        <aside class="resumo">
+          <h2>Resumo do agendamento</h2>
+          <div class="resumo-servico" id="resumo-servico"></div>
+          <div id="resumo-valores"></div>
+          <div class="resumo-linha"><span>Data</span><strong id="resumo-data">Escolha uma data</strong></div>
+          <div class="resumo-linha"><span>Horário</span><strong id="resumo-hora">Escolha um horário</strong></div>
+          <button type="submit" form="form-confirmacao" class="btn btn-primary btn-block">Ir para o pagamento</button>
+          <p class="resumo-obs">O horário só é reservado ao concluir a etapa de pagamento. Em caso de imprevisto, você pode cancelar pelo site.</p>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <script type="module" src="/js/layout.js"></script>
+  <script type="module" src="/js/confirmacao.js"></script>
+</body>
+</html>
