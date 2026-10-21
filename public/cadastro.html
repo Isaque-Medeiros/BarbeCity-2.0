@@ -10,74 +10,138 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-  <script src="/js/theme-init.js"></script>
-  <link rel="stylesheet" href="/css/tokens.css">
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/components.css">
+  <script src="/js/theme-init.js?v=2026.10"></script>
+  <link rel="stylesheet" href="/css/tokens.css?v=2026.10">
+  <link rel="stylesheet" href="/css/base.css?v=2026.10">
+  <link rel="stylesheet" href="/css/components.css?v=2026.10">
 </head>
 <body>
-  <div id="site-header"></div>
   <main id="conteudo" class="auth-shell">
     <aside class="auth-aside">
-      <img src="/assets/logo.svg" alt="Barbe City Jaraguá">
-      <span class="eyebrow">Bem-vindo à casa</span>
-      <h2>Mais praticidade para cuidar do visual.</h2>
-      <p>Crie sua conta para ter seus dados salvos, acompanhar o histórico e reservar horários em segundos.</p>
-      <ul class="auth-lista">
-        <li><svg class="icon"><use href="#i-check"></use></svg> Agendamento sem preencher tudo de novo</li>
-        <li><svg class="icon"><use href="#i-clock"></use></svg> Histórico e próximos horários</li>
-        <li><svg class="icon"><use href="#i-pix"></use></svg> Pagamento no local ou pelo site</li>
-      </ul>
+      <a class="auth-marca" href="/" aria-label="Barbe City Jaraguá — início">
+        <img src="/assets/logo-mark.svg" alt="" width="46" height="46">
+        <span class="auth-marca-texto">
+          <strong>BARBE <em>City</em></strong>
+          <span>JARAGUÁ</span>
+        </span>
+      </a>
+
+      <div class="auth-aside-conteudo">
+        <span class="eyebrow">Bem-vindo à casa</span>
+        <h2>Mais praticidade para cuidar do visual.</h2>
+        <p>Crie sua conta para ter seus dados salvos, acompanhar o histórico e reservar horários em segundos.</p>
+        <ul class="auth-lista">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg> Agendamento sem preencher tudo de novo</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-clock"></use></svg> Histórico e próximos horários</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-pix"></use></svg> Pagamento no local ou pelo site</li>
+        </ul>
+      </div>
+
+      <div class="auth-prova">
+        <div class="auth-prova-avatares" aria-hidden="true">
+          <span class="auth-prova-avatar">AB</span>
+          <span class="auth-prova-avatar">JC</span>
+          <span class="auth-prova-avatar">MR</span>
+          <span class="auth-prova-avatar mais">+</span>
+        </div>
+        <div>
+          <strong>Cadastro em menos de 1 minuto</strong>
+          <span>sem taxa e sem compromisso</span>
+        </div>
+      </div>
+
+      <div class="auth-selos">
+        <span class="auth-selo"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg> Dados protegidos</span>
+        <span class="auth-selo"><svg class="icon" aria-hidden="true"><use href="#i-pix"></use></svg> Pix, cartão ou dinheiro</span>
+      </div>
+
+      <span class="auth-orb auth-orb-a" aria-hidden="true"></span>
+      <span class="auth-orb auth-orb-b" aria-hidden="true"></span>
     </aside>
 
     <div class="auth-main">
-      <div class="auth-card">
-        <h1>Criar conta</h1>
-        <p>É rápido e você pode agendar logo em seguida.</p>
+      <div class="auth-card auth-card-largo">
+        <div class="auth-card-topo">
+          <span class="auth-etapa"><svg class="icon" aria-hidden="true"><use href="#i-sparkles"></use></svg> Grátis e rápido</span>
+          <a class="auth-link" href="https://wa.me/5511915040871" target="_blank" rel="noopener">Precisa de ajuda?</a>
+        </div>
 
-        <a class="btn btn-google" href="/api/auth/google">
-          <svg class="icon"><use href="#i-google"></use></svg> Criar com Google
+        <h1>Criar sua conta</h1>
+        <p>É rápido e você já pode agendar o próximo corte em seguida.</p>
+
+        <a class="btn btn-google btn-block" href="/api/auth/google">
+          <img class="btn-google-icone" src="/assets/icons/google.svg" alt="" width="18" height="18" aria-hidden="true">
+          Cadastrar com Google
         </a>
 
-        <div class="auth-divisor">ou com e-mail</div>
+        <div class="auth-divisor">ou preencha seus dados</div>
 
         <form id="form-cadastro">
           <div class="field">
             <label class="label" for="cadastro-nome">Nome completo</label>
-            <input class="input" id="cadastro-nome" name="nome" required minlength="2" autocomplete="name" placeholder="Seu nome">
+            <div class="input-wrap">
+              <svg class="icon" aria-hidden="true"><use href="#i-user"></use></svg>
+              <input class="input" id="cadastro-nome" name="nome" required minlength="2" autocomplete="name" placeholder="Seu nome">
+            </div>
           </div>
           <div class="field">
             <label class="label" for="cadastro-email">E-mail</label>
-            <input class="input" id="cadastro-email" name="email" type="email" required autocomplete="email" placeholder="voce@email.com">
+            <div class="input-wrap">
+              <svg class="icon" aria-hidden="true"><use href="#i-mail"></use></svg>
+              <input class="input" id="cadastro-email" name="email" type="email" required autocomplete="email" placeholder="voce@email.com">
+            </div>
           </div>
           <div class="field">
             <label class="label" for="cadastro-telefone">WhatsApp / telefone (opcional)</label>
-            <input class="input" id="cadastro-telefone" name="telefone" type="tel" autocomplete="tel" placeholder="(11) 99999-9999">
+            <div class="input-wrap">
+              <svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg>
+              <input class="input" id="cadastro-telefone" name="telefone" type="tel" autocomplete="tel" placeholder="(11) 99999-9999">
+            </div>
           </div>
           <div class="form-grade">
             <div class="field">
               <label class="label" for="cadastro-senha">Senha</label>
-              <input class="input" id="cadastro-senha" name="senha" type="password" required minlength="8" autocomplete="new-password">
+              <div class="input-wrap">
+                <svg class="icon" aria-hidden="true"><use href="#i-lock"></use></svg>
+                <input class="input input-senha" id="cadastro-senha" name="senha" type="password" required minlength="8" autocomplete="new-password">
+                <button type="button" class="input-acao" data-senha-toggle="cadastro-senha" aria-pressed="false" aria-label="Mostrar senha">
+                  <svg class="icon" aria-hidden="true"><use href="#i-eye"></use></svg>
+                </button>
+              </div>
               <span class="hint">Mínimo de 8 caracteres, com letra e número.</span>
             </div>
             <div class="field">
               <label class="label" for="cadastro-confirmar">Confirmar senha</label>
-              <input class="input" id="cadastro-confirmar" name="confirmarSenha" type="password" required minlength="8" autocomplete="new-password">
+              <div class="input-wrap">
+                <svg class="icon" aria-hidden="true"><use href="#i-lock"></use></svg>
+                <input class="input input-senha" id="cadastro-confirmar" name="confirmarSenha" type="password" required minlength="8" autocomplete="new-password">
+                <button type="button" class="input-acao" data-senha-toggle="cadastro-confirmar" aria-pressed="false" aria-label="Mostrar senha">
+                  <svg class="icon" aria-hidden="true"><use href="#i-eye"></use></svg>
+                </button>
+              </div>
             </div>
           </div>
           <label class="checkbox" style="margin:6px 0 18px;">
             <input type="checkbox" name="aceitePrivacidade" required>
             <span>Li e aceito a <a href="/privacidade.html" target="_blank" rel="noopener">política de privacidade</a> e o tratamento dos meus dados.</span>
           </label>
-          <button type="submit" class="btn btn-primary btn-block">Criar minha conta</button>
+          <button type="submit" class="btn btn-primary btn-lg btn-block">
+            Criar minha conta
+            <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+          </button>
         </form>
 
-        <p style="margin-top:16px;font-size:.86rem;text-align:center;">Já tem conta? <a href="/login.html">Entrar</a></p>
+        <p class="auth-troca">Já tem conta? <a href="/login.html">Entrar</a></p>
+
+        <p class="auth-confianca">
+          <svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>
+          Conexão segura · seus dados são tratados conforme a LGPD
+        </p>
       </div>
     </div>
   </main>
   <div id="site-footer"></div>
-  <script type="module" src="/js/layout.js"></script>
-  <script type="module" src="/js/auth.js"></script>
+  <script type="module" src="/js/layout.js?v=2026.10"></script>
+  <script type="module" src="/js/auth.js?v=2026.10"></script>
 </body>
 </html>

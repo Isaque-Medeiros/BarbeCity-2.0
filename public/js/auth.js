@@ -192,6 +192,21 @@ function ligarRecuperacao() {
   });
 }
 
+function ligarSenhas() {
+  document.querySelectorAll('[data-senha-toggle]').forEach((botao) => {
+    botao.addEventListener('click', () => {
+      const campo = document.getElementById(botao.dataset.senhaToggle);
+      if (!campo) return;
+      const visivel = campo.type === 'text';
+      campo.type = visivel ? 'password' : 'text';
+      botao.setAttribute('aria-pressed', String(!visivel));
+      botao.setAttribute('aria-label', visivel ? 'Mostrar senha' : 'Ocultar senha');
+      const uso = botao.querySelector('use');
+      if (uso) uso.setAttribute('href', visivel ? '#i-eye' : '#i-eye-off');
+    });
+  });
+}
+
 function iniciar() {
   const erro = lerQuery('erro');
   if (erro && ERROS[erro]) toast(ERROS[erro], 'aviso', 7000);
@@ -218,6 +233,7 @@ function iniciar() {
   ligarLogin();
   ligarCadastro();
   ligarRecuperacao();
+  ligarSenhas();
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);

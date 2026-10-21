@@ -155,6 +155,40 @@ function renderizarFooter(config) {
   </footer>`;
 }
 
+let globaisLigados = false;
+
+function fecharMenu() {
+  document.body.classList.remove('menu-aberto');
+  const botao = document.querySelector('[data-menu-toggle]');
+  if (botao) {
+    botao.setAttribute('aria-expanded', 'false');
+    botao.setAttribute('aria-label', 'Abrir menu');
+  }
+}
+
+function ligarGlobais() {
+  if (globaisLigados) return;
+  globaisLigados = true;
+  document.addEventListener('keydown', (evento) => {
+    if (evento.key === 'Escape') fecharMenu();
+  });
+  window.addEventListener(
+    'resize',
+    () => {
+      if (window.innerWidth > 1023) fecharMenu();
+    },
+    { passive: true },
+  );
+  window.addEventListener(
+    'scroll',
+    () => {
+      const header = document.querySelector('[data-header]');
+      if (header) header.classList.toggle('is-scrolled', window.scrollY > 12);
+    },
+    { passive: true },
+  );
+}
+
 function ligarComportamentos() {
   document.querySelectorAll('[data-tema-toggle]').forEach((botao) => {
     botao.addEventListener('click', () => {
@@ -171,20 +205,20 @@ function ligarComportamentos() {
       menu.setAttribute('aria-expanded', String(aberto));
       menu.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
     });
-    nav.querySelectorAll('a').forEach((link) =>
-      link.addEventListener('click', () => {
-        document.body.classList.remove('menu-aberto');
-        menu.setAttribute('aria-expanded', 'false');
-      }),
-    );
+    nav.querySelectorAll('a').forEach((link) => link.addEventListener('click', fecharMenu));
+
+    if (!document.querySelector('.menu-backdrop')) {
+      const backdrop = document.createElement('div');
+      backdrop.className = 'menu-backdrop';
+      backdrop.setAttribute('aria-hidden', 'true');
+      backdrop.addEventListener('click', fecharMenu);
+      document.body.appendChild(backdrop);
+    }
   }
 
   const header = document.querySelector('[data-header]');
-  if (header) {
-    const aoRolar = () => header.classList.toggle('is-scrolled', window.scrollY > 12);
-    aoRolar();
-    window.addEventListener('scroll', aoRolar, { passive: true });
-  }
+  if (header) header.classList.toggle('is-scrolled', window.scrollY > 12);
+  ligarGlobais();
 }
 
 export function atualizarHeader() {
@@ -197,7 +231,7 @@ export function atualizarHeader() {
 }
 
 export async function iniciarLayout() {
-  await injetarSprite();
+  const sprite = injetarSprite();
 
   if (!document.querySelector('.skip-link')) {
     const pular = document.createElement('a');
@@ -207,11 +241,19 @@ export async function iniciarLayout() {
     document.body.prepend(pular);
   }
 
+  const alvoHeader = document.getElementById('site-header');
+  const alvoFooter = document.getElementById('site-footer');
+
+  // Primeiro paint: header/footer com os dados padrão, sem esperar a API.
+  if (alvoHeader) alvoHeader.innerHTML = renderizarHeader(PADRAO);
+  if (alvoFooter) alvoFooter.innerHTML = renderizarFooter(PADRAO);
+  aplicarTema();
+  ligarComportamentos();
+
+  await sprite;
   const [config] = await Promise.all([carregarConfig().catch(() => null), carregarSessao()]);
   const cfg = state.config || config?.configuracao || PADRAO;
 
-  const alvoHeader = document.getElementById('site-header');
-  const alvoFooter = document.getElementById('site-footer');
   if (alvoHeader) alvoHeader.innerHTML = renderizarHeader(cfg);
   if (alvoFooter) alvoFooter.innerHTML = renderizarFooter(cfg);
 

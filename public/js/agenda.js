@@ -93,6 +93,13 @@ export function iniciarAgenda({ alvoCalendario, alvoHorarios, servicoId, adicion
       <div class="calendario-dias">${celulas.join('')}</div>
       <p class="hint" style="margin:14px 0 0;">Horários no fuso de São Paulo. Duração total: ${dados.duracaoTotal} min.</p>`;
 
+    alvoCalendario.querySelector('[data-mes-anterior]').addEventListener('click', () => mudarMes(-1));
+    alvoCalendario.querySelector('[data-mes-seguinte]').addEventListener('click', () => mudarMes(1));
+    alvoCalendario.querySelectorAll('[data-data]').forEach((botao) => {
+      botao.addEventListener('click', () => selecionarDia(botao.dataset.data, dados));
+    });
+  }
+
   function renderHorarios(dados) {
     const disponiveis = dados.slots.filter((slot) => slot.disponivel);
     if (!dados.aberto) {
@@ -180,11 +187,3 @@ export function iniciarAgenda({ alvoCalendario, alvoHorarios, servicoId, adicion
     recarregar: carregarMes,
   };
 }
-
-
-    alvoCalendario.querySelector('[data-mes-anterior]').addEventListener('click', () => mudarMes(-1));
-    alvoCalendario.querySelector('[data-mes-seguinte]').addEventListener('click', () => mudarMes(1));
-    alvoCalendario.querySelectorAll('[data-data]').forEach((botao) => {
-      botao.addEventListener('click', () => selecionarDia(botao.dataset.data, dados));
-    });
-  }
