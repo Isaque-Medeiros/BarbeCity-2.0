@@ -2,7 +2,8 @@ import { api } from './api.js';
 import { brl, escapar, icone, state } from './core.js';
 import { cardServico } from './servico-card.js';
 import { salvarServico } from './booking-state.js';
-import { avatarSVG, mesclarAvatares, rotuloTraits } from './avatar-barbearia.js';
+import { mesclarAvatares } from './avatar-barbearia.js';
+import { avatarSVG3D, normalizarAvatar, rotuloAvatar } from './avatar3d.js?v=2026.19';
 import { toast } from './ui.js';
 
 async function iniciar() {
@@ -41,6 +42,17 @@ async function iniciar() {
     return Math.max(0, Math.round((valorOriginal() - total()) * 100) / 100);
   }
 
+  /* A prévia usa o avatar do próprio cliente (mesmo estilo do editor) e
+     aplica o efeito do serviço escolhido: barba, sobrancelha e luzes. */
+  function avatarDoServico(itens) {
+    const cfg = normalizarAvatar(state.usuario?.avatar || null);
+    const traits = mesclarAvatares(itens);
+    if (traits.barba && cfg.barba === 'nenhuma') cfg.barba = 'cheia';
+    if (traits.sobrancelha) cfg.sobrancelha = 'grossa';
+    if (traits.luzes) cfg.cabelo = 'loiro_dourado';
+    return cfg;
+  }
+
   function renderizarAvatar() {
     const alvoAvatar = document.getElementById('avatar-preview');
     if (!alvoAvatar) return;
@@ -53,13 +65,13 @@ async function iniciar() {
       return;
     }
     const itens = [principal, ...adicionais];
-    const traits = mesclarAvatares(itens);
-    const rotulo = rotuloTraits(traits);
+    const cfg = avatarDoServico(itens);
+    const rotulo = rotuloAvatar(cfg);
     const economia = desconto();
     alvoAvatar.innerHTML = `
       <div class="avatar-preview-card">
         <span class="avatar-preview-eyebrow">Prévia do seu visual</span>
-        ${avatarSVG(traits, { tamanho: 200, rotulo })}
+        ${avatarSVG3D(cfg, { tamanho: 200, rotulo })}
         <strong>${escapar(itens.map((item) => item.nome).join(' + '))}</strong>
         <span class="avatar-preview-rotulo">${escapar(rotulo)}</span>
         ${economia > 0 ? `<span class="badge badge-danger">Economia de ${brl(economia)}</span>` : ''}

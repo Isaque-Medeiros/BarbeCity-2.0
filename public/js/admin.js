@@ -14,7 +14,7 @@ import {
 } from './core.js';
 import { abrirModal, confirmar, definirCarregando, toast } from './ui.js';
 import { avatarMini, chipsServico } from './avatar-barbearia.js';
-import { avatarMini3D } from './avatar3d.js?v=2026.18';
+import { avatarMini3D } from './avatar3d.js?v=2026.20';
 
 const SECOES = [
   { id: 'dashboard', rotulo: 'Visão geral', icone: 'home' },

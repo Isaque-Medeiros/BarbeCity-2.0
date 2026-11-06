@@ -1507,6 +1507,13 @@
   box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.25);
 }
 
+.avatar-preview-card .avatar-3d {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.35));
+}
+
 /* mini avatar no header e nas listas */
 .avatar-mini-3d {
   display: inline-flex;
@@ -1532,6 +1539,14 @@
   .avatar-editor-preview {
     max-width: 190px;
     margin-inline: auto;
+  }
+
+  .avatar-preview-card {
+    padding: 14px;
+  }
+
+  .avatar-preview-card .avatar-3d {
+    max-width: 150px;
   }
 
   .avatar-opcao {
