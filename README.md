@@ -1,7 +1,7 @@
 # 💈 Barbe City Jaraguá — v2
 
 Sistema de agendamento da barbearia do Anderson, em Jaraguá/SP. Versão remasterizada do site antigo, com banco PostgreSQL (Neon), autenticação, pagamento Pix, painel do cliente e painel administrativo.
-
+ 
 ## ✨ Funcionalidades
 - Landing page com identidade visual premium, serviços dinâmicos, mapa, contato e versículo.
 - Agendamento com e sem login, calendário real de disponibilidade e serviços adicionais.
