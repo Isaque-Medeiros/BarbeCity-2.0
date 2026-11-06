@@ -14,7 +14,7 @@ import {
 } from './core.js';
 import { abrirModal, confirmar, definirCarregando, estadoVazio, lerQuery, mascararTelefone, toast } from './ui.js';
 import { stickerCard } from './avatar-barbearia.js';
-import { OPCOES_AVATAR, avatarSVG3D, normalizarAvatar, rotuloAvatar } from './avatar3d.js';
+import { OPCOES_AVATAR, avatarSVG3D, normalizarAvatar, rotuloAvatar } from './avatar3d.js?v=2026.16';
 
 function separarAgendamentos(agendamentos) {
   const agora = Date.now();
@@ -160,6 +160,7 @@ function renderAvatarEditor() {
           <div class="avatar-editor-acoes">
             <button type="button" class="btn btn-primary" data-salvar-avatar>${icone('check')} Salvar avatar</button>
             <button type="button" class="btn btn-ghost" data-avatar-aleatorio>${icone('sparkles')} Surpreenda-me</button>
+            <button type="button" class="btn btn-outline" data-baixar-avatar>${icone('download')} Baixar PNG</button>
           </div>
         </div>
       </div>
@@ -167,6 +168,10 @@ function renderAvatarEditor() {
         ${grupoAvatar('Corte', 'corte', OPCOES_AVATAR.corte)}
         ${grupoAvatar('Barba', 'barba', OPCOES_AVATAR.barba)}
         ${grupoAvatar('Sobrancelha', 'sobrancelha', OPCOES_AVATAR.sobrancelha)}
+        ${grupoAvatar('Boca', 'boca', OPCOES_AVATAR.boca)}
+        ${grupoAvatar('Acessório', 'acessorio', OPCOES_AVATAR.acessorio)}
+        ${grupoAvatar('Camisa', 'roupa', OPCOES_AVATAR.roupa, { cor: true })}
+        ${grupoAvatar('Fundo', 'fundo', OPCOES_AVATAR.fundo)}
         ${grupoAvatar('Pele', 'pele', OPCOES_AVATAR.pele, { cor: true })}
         ${grupoAvatar('Cor do cabelo', 'cabelo', OPCOES_AVATAR.cabelo, { cor: true })}
       </div>
@@ -199,10 +204,36 @@ function ligarAvatarEditor() {
       corte: sorteia(OPCOES_AVATAR.corte),
       barba: sorteia(OPCOES_AVATAR.barba),
       sobrancelha: sorteia(OPCOES_AVATAR.sobrancelha),
+      boca: sorteia(OPCOES_AVATAR.boca),
+      acessorio: sorteia(OPCOES_AVATAR.acessorio),
+      roupa: sorteia(OPCOES_AVATAR.roupa),
+      fundo: sorteia(OPCOES_AVATAR.fundo),
       pele: sorteia(OPCOES_AVATAR.pele),
       cabelo: sorteia(OPCOES_AVATAR.cabelo),
     });
     pintarPreviewAvatar();
+  });
+
+  document.querySelector('[data-baixar-avatar]')?.addEventListener('click', () => {
+    const svg = document.querySelector('#avatar-preview svg');
+    if (!svg) return;
+    const markup = new XMLSerializer().serializeToString(svg);
+    // data: URI em vez de blob: para respeitar a CSP (img-src 'self' data:)
+    const origem = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(markup)))}`;
+    const imagem = new Image();
+    imagem.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 528;
+      canvas.height = 560;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(imagem, 0, 0, canvas.width, canvas.height);
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = 'meu-avatar.png';
+      link.click();
+    };
+    imagem.onerror = () => toast('Não foi possível gerar a imagem.', 'erro');
+    imagem.src = origem;
   });
 
   document.querySelector('[data-salvar-avatar]')?.addEventListener('click', async (evento) => {
