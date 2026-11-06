@@ -12,6 +12,11 @@ const CORTES = {
   degrade: 'Degradê',
   social: 'Social',
   moicano: 'Moicano',
+  topete: 'Topete',
+  raspado: 'Raspado',
+  franja: 'Franja',
+  coque: 'Coque',
+  dreads: 'Dreads',
   longo: 'Longo',
   cacheado: 'Cacheado',
   careca: 'Careca',
@@ -25,7 +30,15 @@ const BARBAS = {
   barba: 'Barba longa',
 };
 
-const SOBRANCELHAS = { normal: 'Normal', grossa: 'Grossa', fina: 'Fina', arqueada: 'Arqueada' };
+const SOBRANCELHAS = {
+  normal: 'Normal',
+  grossa: 'Grossa',
+  fina: 'Fina',
+  arqueada: 'Arqueada',
+  triste: 'Triste',
+  levantada: 'Levantada',
+  reta: 'Reta',
+};
 
 const BOCAS = { sorriso: 'Sorriso', serio: 'Sério', surpreso: 'Surpreso', sorriso_aberto: 'Sorrindo' };
 
@@ -155,6 +168,36 @@ function cabelo(corte, cor) {
         <path d="M126 40 C144 40 154 56 156 76 C158 94 148 104 132 104 C116 104 106 94 108 76 C110 56 120 40 126 40 Z" fill="${base}"/>
         <path d="M132 88 C120 88 112 80 110 68 C116 78 124 84 134 84 Z" fill="${sombra}"/>`;
 
+    case 'topete':
+      return `
+        <path d="M70 128 C70 92 88 68 112 60 C122 50 142 50 154 60 C178 72 192 96 194 128 C188 108 172 94 152 90 C140 88 124 88 112 90 C92 94 76 108 70 128 Z" fill="${base}"/>
+        <path d="M112 60 C122 50 142 50 154 60 C146 56 134 54 124 56 Z" fill="${sombra}" opacity=".5"/>`;
+
+    case 'raspado':
+      return `
+        <path d="M72 126 C72 88 98 62 132 62 C166 62 192 88 192 126 C188 110 174 98 156 94 C144 92 120 92 108 94 C90 98 76 110 72 126 Z" fill="${base}" opacity=".9"/>
+        <path d="M96 74 C108 66 122 64 134 66" stroke="${sombra}" stroke-width="3" fill="none" opacity=".35" stroke-linecap="round"/>`;
+
+    case 'franja':
+      return `
+        <path d="M68 130 C68 84 96 56 132 56 C168 56 196 84 196 130 C194 150 192 172 188 190 C182 172 178 152 176 132 L176 104 L88 104 L88 132 C86 152 82 172 76 190 C72 172 70 150 68 130 Z" fill="${base}"/>
+        <path d="M88 104 L176 104 C172 96 160 90 146 92 C136 84 118 84 108 92 C96 94 90 98 88 104 Z" fill="${sombra}" opacity=".45"/>`;
+
+    case 'coque':
+      return `
+        <circle cx="132" cy="44" r="19" fill="${base}"/>
+        <circle cx="126" cy="40" r="7" fill="${sombra}" opacity=".45"/>
+        <path d="M70 128 C70 84 96 58 132 58 C168 58 194 84 194 128 C188 106 172 92 152 88 C140 86 124 86 112 88 C92 92 76 106 70 128 Z" fill="${base}"/>
+        <path d="M110 62 C118 56 130 54 140 58" stroke="${sombra}" stroke-width="3" fill="none" opacity=".4" stroke-linecap="round"/>`;
+
+    case 'dreads':
+      return `
+        <path d="M70 128 C70 84 96 58 132 58 C168 58 194 84 194 128 C188 106 172 92 152 88 C140 86 124 86 112 88 C92 92 76 106 70 128 Z" fill="${base}"/>
+        <g stroke="${sombra}" stroke-width="7" stroke-linecap="round" opacity=".85">
+          <path d="M86 96 L82 118"/><path d="M104 82 L100 106"/><path d="M122 76 L120 100"/>
+          <path d="M142 76 L144 100"/><path d="M160 82 L164 106"/><path d="M178 96 L182 118"/>
+        </g>`;
+
     case 'longo':
       return `
         <path d="M70 128 C70 84 96 58 132 58 C168 58 194 84 194 128 C194 160 192 196 186 226 C178 208 174 184 174 160 C172 128 158 112 132 112 C106 112 92 128 90 160 C90 184 86 208 78 226 C72 196 70 160 70 128 Z" fill="${base}"/>
@@ -223,8 +266,16 @@ function olhos() {
 
 function sobrancelhas(tipo, cor) {
   const esp = tipo === 'grossa' ? 4.4 : tipo === 'fina' ? 2.2 : 3.2;
-  const esq = tipo === 'arqueada' ? 'M98 110 Q108 103 118 108' : 'M98 110 Q108 105 118 110';
-  const dir = tipo === 'arqueada' ? 'M146 108 Q156 103 166 110' : 'M146 110 Q156 105 166 110';
+  const formas = {
+    normal: ['M98 110 Q108 105 118 110', 'M146 110 Q156 105 166 110'],
+    grossa: ['M98 110 Q108 105 118 110', 'M146 110 Q156 105 166 110'],
+    fina: ['M98 110 Q108 105 118 110', 'M146 110 Q156 105 166 110'],
+    arqueada: ['M98 110 Q108 103 118 108', 'M146 108 Q156 103 166 110'],
+    triste: ['M98 107 Q108 113 118 117', 'M146 117 Q156 113 166 107'],
+    levantada: ['M98 113 Q108 104 118 105', 'M146 105 Q156 104 166 113'],
+    reta: ['M98 110 L118 110', 'M146 110 L166 110'],
+  };
+  const [esq, dir] = formas[tipo] || formas.normal;
   return `
     <path d="${esq}" stroke="${cor.base}" stroke-width="${esp}" fill="none" stroke-linecap="round"/>
     <path d="${dir}" stroke="${cor.base}" stroke-width="${esp}" fill="none" stroke-linecap="round"/>`;

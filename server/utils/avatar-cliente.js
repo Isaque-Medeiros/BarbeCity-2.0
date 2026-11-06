@@ -4,9 +4,21 @@
  * então o JSON gravado nunca carrega HTML ou string arbitrária.
  */
 
-export const CORTES = ['degrade', 'social', 'moicano', 'longo', 'cacheado', 'careca'];
+export const CORTES = [
+  'degrade',
+  'social',
+  'moicano',
+  'topete',
+  'raspado',
+  'franja',
+  'coque',
+  'dreads',
+  'longo',
+  'cacheado',
+  'careca',
+];
 export const BARBAS = ['nenhuma', 'bigode', 'cavanhaque', 'cheia', 'barba'];
-export const SOBRANCELHAS = ['normal', 'grossa', 'fina', 'arqueada'];
+export const SOBRANCELHAS = ['normal', 'grossa', 'fina', 'arqueada', 'triste', 'levantada', 'reta'];
 export const BOCAS = ['sorriso', 'serio', 'surpreso', 'sorriso_aberto'];
 export const ACESSORIOS = ['nenhum', 'oculos', 'redondo', 'escuro'];
 export const ROUPAS = ['escura', 'clara', 'vinho', 'azul'];
