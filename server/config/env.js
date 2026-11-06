@@ -71,7 +71,7 @@ export const config = {
   google: {
     clientId: texto('GOOGLE_CLIENT_ID'),
     clientSecret: texto('GOOGLE_CLIENT_SECRET'),
-    redirectUri: texto('GOOGLE_REDIRECT_URI', `${baseUrl}/api/auth/google/callback`),
+    redirectUri: texto('GOOGLE_REDIRECT_URI'),
   },
 
   pix: {

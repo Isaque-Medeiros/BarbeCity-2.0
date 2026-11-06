@@ -1,5 +1,6 @@
 import { carregarConfig, carregarSessao, escapar, icone, state } from './core.js';
 import { aplicarTemaSite } from './tema-site.js';
+import { avatarMini3D } from './avatar3d.js';
 
 const PADRAO = {
   nome: 'Barbe City Jaraguá',
@@ -16,6 +17,7 @@ const PADRAO = {
 };
 
 let spriteInjetado = false;
+let ultimoFoco = null;
 
 async function injetarSprite() {
   if (spriteInjetado || document.getElementById('bcity-sprite')) return;
@@ -49,28 +51,31 @@ export function aplicarTema(tema) {
 }
 
 function linkNav(href, texto, ativo) {
-  return `<a class="nav-link ${ativo ? 'is-active' : ''}" href="${href}">${texto}</a>`;
+  return `<a class="nav-link ${ativo ? 'is-active' : ''}" href="${href}" ${ativo ? 'aria-current="page"' : ''}>${texto}</a>`;
 }
 
 function renderizarHeader(config) {
   const caminho = window.location.pathname.replace(/\/$/, '') || '/';
   const ativo = (pagina) => caminho === pagina || caminho.endsWith(pagina);
   const usuario = state.usuario;
+  const primeiroNome = usuario?.nome ? escapar(usuario.nome.split(' ')[0]) : '';
+
   const areaUsuario = usuario
-    ? `<a class="nav-link account-link" href="/usuario.html">${icone('user')}<span>${escapar(
-        usuario.nome.split(' ')[0],
-      )}</span></a>`
+    ? `<a class="nav-link account-link" href="/usuario.html">${usuario.avatar ? avatarMini3D(usuario.avatar, { tamanho: 26 }) : icone('user')}<span>${primeiroNome}</span></a>`
     : `<a class="nav-link account-link" href="/login.html">${icone('user')}<span>Entrar</span></a>`;
+
   const admin =
     usuario?.role === 'admin'
       ? `<a class="nav-link admin-link" href="/admin.html">${icone('settings')}<span>Painel</span></a>`
       : '';
 
+  const cta = `<a class="btn btn-primary btn-sm header-cta" href="/servicos.html">${icone('calendar')} Agendar</a>`;
+
   return `
   <header class="site-header" data-header>
-    <div class="container header-inner">
+    <div class="header-inner">
       <a class="brand" href="/" aria-label="${escapar(config.nome)} — início">
-        <img src="/assets/logo-mark.svg" alt="" width="44" height="44" class="brand-mark">
+        <img src="/assets/logo-mark.svg" alt="" width="40" height="40" class="brand-mark">
         <span class="brand-text">
           <span class="brand-name">BARBE <em>City</em></span>
           <span class="brand-sub">JARAGUÁ</span>
@@ -78,6 +83,10 @@ function renderizarHeader(config) {
       </a>
 
       <nav class="primary-nav" id="primary-nav" aria-label="Navegação principal">
+        <div class="drawer-head">
+          <span class="drawer-title">Menu</span>
+          <button type="button" class="drawer-close" data-menu-close aria-label="Fechar menu">${icone('x')}</button>
+        </div>
         ${linkNav('/', 'Início', caminho === '/')}
         ${linkNav('/servicos.html', 'Serviços', ativo('/servicos.html'))}
         ${linkNav('/consultar.html', 'Meu agendamento', ativo('/consultar.html'))}
@@ -85,6 +94,7 @@ function renderizarHeader(config) {
         <a class="nav-link" href="/#contato">Contato</a>
         ${admin}
         <div class="nav-mobile-extra">
+          ${areaUsuario}
           <a class="btn btn-primary btn-block" href="/servicos.html">${icone('scissors')} Agendar horário</a>
         </div>
       </nav>
@@ -92,13 +102,15 @@ function renderizarHeader(config) {
       <div class="header-actions">
         <button type="button" class="btn-icon theme-toggle" data-tema-toggle aria-label="Alternar tema">${icone('moon')}</button>
         ${areaUsuario}
-        <a class="btn btn-primary btn-sm header-cta" href="/servicos.html">${icone('calendar')} Agendar</a>
-        <button type="button" class="btn-icon menu-toggle" data-menu-toggle aria-label="Abrir menu" aria-expanded="false" aria-controls="primary-nav">
+        ${admin}
+        ${cta}
+        <button type="button" class="menu-toggle" data-menu-toggle aria-label="Abrir menu" aria-expanded="false" aria-controls="primary-nav">
           <span class="menu-bars" aria-hidden="true"></span>
         </button>
       </div>
     </div>
-  </header>`;
+  </header>
+  <div class="menu-backdrop" data-menu-backdrop aria-hidden="true"></div>`;
 }
 
 function renderizarFooter(config) {
@@ -109,7 +121,7 @@ function renderizarFooter(config) {
     <div class="container footer-grid">
       <div class="footer-brand">
         <a class="brand" href="/" aria-label="${escapar(config.nome)}">
-          <img src="/assets/logo-mark.svg" alt="" width="52" height="52" class="brand-mark">
+          <img src="/assets/logo-mark.svg" alt="" width="44" height="44" class="brand-mark">
           <span class="brand-text">
             <span class="brand-name">BARBE <em>City</em></span>
             <span class="brand-sub">JARAGUÁ</span>
@@ -155,41 +167,114 @@ function renderizarFooter(config) {
   </footer>`;
 }
 
-let globaisLigados = false;
+const FOCAVEIS = 'a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])';
 
-function fecharMenu() {
+/* A gaveta mobile precisa ser filha do body: qualquer ancestral com
+   transform/filter/backdrop-filter viraria containing block e prenderia
+   o position:fixed dentro do header. */
+function posicionarNav() {
+  const nav = document.getElementById('primary-nav');
+  const header = document.querySelector('.site-header');
+  if (!nav || !header) return;
+  const inner = header.querySelector('.header-inner');
+  const mobile = window.matchMedia('(max-width: 1023px)').matches;
+  if (mobile) {
+    if (nav.parentElement !== document.body) document.body.appendChild(nav);
+  } else if (inner && nav.parentElement !== inner) {
+    inner.insertBefore(nav, inner.querySelector('.header-actions'));
+  }
+}
+
+function menuEstaAberto() {
+  return document.body.classList.contains('menu-aberto');
+}
+
+function fecharMenu({ devolverFoco = true } = {}) {
+  if (!menuEstaAberto()) return;
   document.body.classList.remove('menu-aberto');
   const botao = document.querySelector('[data-menu-toggle]');
   if (botao) {
     botao.setAttribute('aria-expanded', 'false');
     botao.setAttribute('aria-label', 'Abrir menu');
   }
+  if (devolverFoco && ultimoFoco && typeof ultimoFoco.focus === 'function') {
+    ultimoFoco.focus({ preventScroll: true });
+  }
 }
+
+function abrirMenu() {
+  const nav = document.getElementById('primary-nav');
+  if (!nav) return;
+  ultimoFoco = document.activeElement;
+  document.body.classList.add('menu-aberto');
+  const botao = document.querySelector('[data-menu-toggle]');
+  if (botao) {
+    botao.setAttribute('aria-expanded', 'true');
+    botao.setAttribute('aria-label', 'Fechar menu');
+  }
+  const primeiro = nav.querySelector(FOCAVEIS);
+  if (primeiro) primeiro.focus({ preventScroll: true });
+}
+
+function prenderFoco(evento) {
+  const nav = document.getElementById('primary-nav');
+  if (!nav) return;
+  const itens = [...nav.querySelectorAll(FOCAVEIS)].filter((el) => el.offsetParent !== null);
+  if (!itens.length) return;
+  const primeiro = itens[0];
+  const ultimo = itens[itens.length - 1];
+  if (evento.shiftKey && document.activeElement === primeiro) {
+    evento.preventDefault();
+    ultimo.focus();
+  } else if (!evento.shiftKey && document.activeElement === ultimo) {
+    evento.preventDefault();
+    primeiro.focus();
+  }
+}
+
+let globaisLigados = false;
 
 function ligarGlobais() {
   if (globaisLigados) return;
   globaisLigados = true;
+
   document.addEventListener('keydown', (evento) => {
     if (evento.key === 'Escape') fecharMenu();
+    if (evento.key === 'Tab' && menuEstaAberto()) prenderFoco(evento);
   });
+
   window.addEventListener(
     'resize',
     () => {
-      if (window.innerWidth > 1023) fecharMenu();
+      posicionarNav();
+      if (window.innerWidth > 1023) fecharMenu({ devolverFoco: false });
     },
     { passive: true },
   );
+
+  let ultimoScroll = 0;
   window.addEventListener(
     'scroll',
     () => {
       const header = document.querySelector('[data-header]');
-      if (header) header.classList.toggle('is-scrolled', window.scrollY > 12);
+      if (!header) return;
+      const y = window.scrollY || document.documentElement.scrollTop;
+      if (Math.abs(y - ultimoScroll) < 6) return;
+      ultimoScroll = y;
+      header.classList.toggle('is-scrolled', y > 10);
     },
     { passive: true },
   );
 }
 
+function removerNavSolta() {
+  document.querySelectorAll('body > #primary-nav').forEach((n) => n.remove());
+}
+
 function ligarComportamentos() {
+  removerNavSolta();
+  posicionarNav();
+
   document.querySelectorAll('[data-tema-toggle]').forEach((botao) => {
     botao.addEventListener('click', () => {
       const atual = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
@@ -200,31 +285,94 @@ function ligarComportamentos() {
   const menu = document.querySelector('[data-menu-toggle]');
   const nav = document.getElementById('primary-nav');
   if (menu && nav) {
-    menu.addEventListener('click', () => {
-      const aberto = document.body.classList.toggle('menu-aberto');
-      menu.setAttribute('aria-expanded', String(aberto));
-      menu.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
-    });
-    nav.querySelectorAll('a').forEach((link) => link.addEventListener('click', fecharMenu));
+    menu.addEventListener('click', () => (menuEstaAberto() ? fecharMenu() : abrirMenu()));
 
-    if (!document.querySelector('.menu-backdrop')) {
-      const backdrop = document.createElement('div');
-      backdrop.className = 'menu-backdrop';
-      backdrop.setAttribute('aria-hidden', 'true');
-      backdrop.addEventListener('click', fecharMenu);
-      document.body.appendChild(backdrop);
-    }
+    const fechar = document.querySelector('[data-menu-close]');
+    if (fechar) fechar.addEventListener('click', () => fecharMenu());
+
+    nav.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => fecharMenu({ devolverFoco: false })));
+
+    const backdrop = document.querySelector('[data-menu-backdrop]');
+    if (backdrop) backdrop.addEventListener('click', () => fecharMenu());
   }
 
   const header = document.querySelector('[data-header]');
-  if (header) header.classList.toggle('is-scrolled', window.scrollY > 12);
+  if (header) header.classList.toggle('is-scrolled', (window.scrollY || 0) > 10);
   ligarGlobais();
+  iniciarRevelacao();
+}
+
+/* Revelação suave no scroll — só em elementos estáticos, para não
+   esconder conteúdo montado depois por JS. */
+let revelacaoIniciada = false;
+
+function iniciarRevelacao() {
+  if (revelacaoIniciada) return;
+  revelacaoIniciada = true;
+  if (!('IntersectionObserver' in window)) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const seletor = [
+    '.section-head',
+    '.hero-copy > *',
+    '.hero-visual',
+    '.diferencial',
+    '.galeria-item',
+    '.sobre-grid > *',
+    '.contato-grid > *',
+    '.versiculo blockquote',
+    '.page-head > *',
+    '.auth-card',
+    '.perfil-topo',
+  ].join(',');
+
+  const alvos = [...document.querySelectorAll(seletor)].filter((el) => !el.hasAttribute('data-reveal'));
+  if (!alvos.length) return;
+
+  alvos.forEach((el, indice) => {
+    el.setAttribute('data-reveal', '');
+    const atraso = Math.min((indice % 4) * 70, 210);
+    el.style.setProperty('--reveal-delay', `${atraso}ms`);
+  });
+
+  const observador = new IntersectionObserver(
+    (entradas) => {
+      entradas.forEach((entrada) => {
+        if (!entrada.isIntersecting) return;
+        entrada.target.classList.add('is-visible');
+        observador.unobserve(entrada.target);
+      });
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -6% 0px' },
+  );
+
+  alvos.forEach((el) => observador.observe(el));
+
+  // rede de segurança: revela o que estiver perto da viewport mesmo se o
+  // observer não disparar (print, salto de âncora, navegador antigo)
+  const pendentes = new Set(alvos);
+  const revelarProximos = () => {
+    const limite = window.innerHeight + 140;
+    for (const el of [...pendentes]) {
+      if (el.getBoundingClientRect().top < limite) {
+        el.classList.add('is-visible');
+        pendentes.delete(el);
+      }
+    }
+  };
+
+  window.addEventListener('scroll', revelarProximos, { passive: true });
+  window.addEventListener('resize', revelarProximos, { passive: true });
+  window.addEventListener('beforeprint', () => alvos.forEach((el) => el.classList.add('is-visible')));
+  setTimeout(revelarProximos, 700);
+  setTimeout(revelarProximos, 1800);
 }
 
 export function atualizarHeader() {
   const alvo = document.getElementById('site-header');
   if (!alvo) return;
   const config = state.config || PADRAO;
+  removerNavSolta();
   alvo.innerHTML = renderizarHeader(config);
   aplicarTema();
   ligarComportamentos();
@@ -244,6 +392,9 @@ export async function iniciarLayout() {
   const alvoHeader = document.getElementById('site-header');
   const alvoFooter = document.getElementById('site-footer');
 
+  // header fixo: o body precisa compensar a altura
+  document.body.classList.toggle('tem-header', Boolean(alvoHeader));
+
   // Primeiro paint: header/footer com os dados padrão, sem esperar a API.
   if (alvoHeader) alvoHeader.innerHTML = renderizarHeader(PADRAO);
   if (alvoFooter) alvoFooter.innerHTML = renderizarFooter(PADRAO);
@@ -252,7 +403,8 @@ export async function iniciarLayout() {
 
   await sprite;
   const [config] = await Promise.all([carregarConfig().catch(() => null), carregarSessao()]);
-  const cfg = state.config || config?.configuracao || PADRAO;
+  // carregarConfig() devolve o state (config em state.config), não { configuracao }
+  const cfg = state.config || config?.config || PADRAO;
 
   if (alvoHeader) alvoHeader.innerHTML = renderizarHeader(cfg);
   if (alvoFooter) alvoFooter.innerHTML = renderizarFooter(cfg);

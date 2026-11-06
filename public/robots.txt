@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /usuario.html
+Disallow: /api/
+
+Sitemap: https://barbe-city-jaragua-eta.vercel.app/sitemap.xml

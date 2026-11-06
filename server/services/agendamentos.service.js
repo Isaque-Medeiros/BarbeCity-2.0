@@ -6,6 +6,7 @@ import { criarCobrancaPix } from './pix.service.js';
 
 const SELECT_BASE = `
   SELECT a.*,
+         u.avatar AS usuario_avatar,
          s.nome AS servico_nome,
          s.slug AS servico_slug,
          s.icone AS servico_icone,
@@ -20,6 +21,7 @@ const SELECT_BASE = `
          ) AS adicionais
   FROM agendamentos a
   JOIN servicos s ON s.id = a.servico_id
+  LEFT JOIN usuarios u ON u.id = a.usuario_id
   LEFT JOIN LATERAL (
     SELECT id, metodo, status, valor
     FROM pagamentos WHERE agendamento_id = a.id

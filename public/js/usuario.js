@@ -14,6 +14,7 @@ import {
 } from './core.js';
 import { abrirModal, confirmar, definirCarregando, estadoVazio, lerQuery, mascararTelefone, toast } from './ui.js';
 import { stickerCard } from './avatar-barbearia.js';
+import { OPCOES_AVATAR, avatarSVG3D, normalizarAvatar, rotuloAvatar } from './avatar3d.js';
 
 function separarAgendamentos(agendamentos) {
   const agora = Date.now();
@@ -51,9 +52,12 @@ function itemAgendamento(agendamento, { cancelavel = false } = {}) {
 }
 
 function renderPerfil(usuario, resumo) {
+  const avatarUsuario = usuario?.avatar
+    ? avatarSVG3D(usuario.avatar, { tamanho: 96 })
+    : `<span class="avatar">${escapar(iniciais(usuario.nome))}</span>`;
   return `
     <div class="perfil-topo">
-      <span class="avatar">${escapar(iniciais(usuario.nome))}</span>
+      ${usuario?.avatar ? `<span class="perfil-avatar">${avatarUsuario}</span>` : avatarUsuario}
       <div>
         <h1>Olá, ${escapar(usuario.nome.split(' ')[0])}</h1>
         <p>${escapar(usuario.email || '')}${usuario.telefone ? ` · ${escapar(formatarTelefone(usuario.telefone))}` : ''}</p>
@@ -75,9 +79,11 @@ function renderPerfil(usuario, resumo) {
       <div class="kpi"><span>Atendimentos concluídos</span><strong>${resumo.concluidos}</strong></div>
       <div class="kpi green"><span>Total investido</span><strong>${brl(resumo.totalPago)}</strong></div>
     </div>`;
+}
 
 function renderAba(agendamentos, aba, resumo) {
   if (aba === 'perfil') return renderPerfilForm(state.usuario);
+  if (aba === 'avatar') return renderAvatarEditor();
   const { proximos, historico } = separarAgendamentos(agendamentos);
   const lista = aba === 'historico' ? historico : proximos;
   if (lista.length === 0) {
@@ -122,6 +128,101 @@ function renderPerfilForm(usuario) {
     </div>`;
 }
 
+/* ------------------------------- avatar ------------------------------- */
+
+let avatarCfg = normalizarAvatar(null);
+
+function grupoAvatar(titulo, chave, itens, { cor = false } = {}) {
+  const atual = avatarCfg[chave];
+  const botoes = itens
+    .map((item) => {
+      const ativo = item.valor === atual ? 'is-active' : '';
+      const amostra = cor ? `<span class="avatar-amostra" style="background:${item.cor}"></span>` : '';
+      return `<button type="button" class="avatar-opcao ${ativo}" data-avatar-chave="${chave}" data-avatar-valor="${item.valor}" aria-pressed="${ativo ? 'true' : 'false'}">${amostra}<span>${item.rotulo}</span></button>`;
+    })
+    .join('');
+  return `
+    <div class="avatar-grupo">
+      <span class="avatar-grupo-titulo">${titulo}</span>
+      <div class="avatar-opcoes">${botoes}</div>
+    </div>`;
+}
+
+function renderAvatarEditor() {
+  return `
+    <div class="painel avatar-editor">
+      <div class="avatar-editor-topo">
+        <div class="avatar-editor-preview" id="avatar-preview">${avatarSVG3D(avatarCfg, { tamanho: 190 })}</div>
+        <div class="avatar-editor-info">
+          <h2>Meu avatar</h2>
+          <p class="muted">Monte seu bonequinho. Ele aparece na sua conta e no painel da barbearia, junto do serviço que você marcou.</p>
+          <p><span class="badge badge-gold" id="avatar-rotulo">${rotuloAvatar(avatarCfg)}</span></p>
+          <div class="avatar-editor-acoes">
+            <button type="button" class="btn btn-primary" data-salvar-avatar>${icone('check')} Salvar avatar</button>
+            <button type="button" class="btn btn-ghost" data-avatar-aleatorio>${icone('sparkles')} Surpreenda-me</button>
+          </div>
+        </div>
+      </div>
+      <div class="avatar-grupos">
+        ${grupoAvatar('Corte', 'corte', OPCOES_AVATAR.corte)}
+        ${grupoAvatar('Barba', 'barba', OPCOES_AVATAR.barba)}
+        ${grupoAvatar('Sobrancelha', 'sobrancelha', OPCOES_AVATAR.sobrancelha)}
+        ${grupoAvatar('Pele', 'pele', OPCOES_AVATAR.pele, { cor: true })}
+        ${grupoAvatar('Cor do cabelo', 'cabelo', OPCOES_AVATAR.cabelo, { cor: true })}
+      </div>
+    </div>`;
+}
+
+function pintarPreviewAvatar() {
+  const alvo = document.getElementById('avatar-preview');
+  if (alvo) alvo.innerHTML = avatarSVG3D(avatarCfg, { tamanho: 190 });
+  const rotulo = document.getElementById('avatar-rotulo');
+  if (rotulo) rotulo.textContent = rotuloAvatar(avatarCfg);
+  document.querySelectorAll('[data-avatar-chave]').forEach((botao) => {
+    const ativo = avatarCfg[botao.dataset.avatarChave] === botao.dataset.avatarValor;
+    botao.classList.toggle('is-active', ativo);
+    botao.setAttribute('aria-pressed', ativo ? 'true' : 'false');
+  });
+}
+
+function ligarAvatarEditor() {
+  document.querySelectorAll('[data-avatar-chave]').forEach((botao) => {
+    botao.addEventListener('click', () => {
+      avatarCfg = normalizarAvatar({ ...avatarCfg, [botao.dataset.avatarChave]: botao.dataset.avatarValor });
+      pintarPreviewAvatar();
+    });
+  });
+
+  document.querySelector('[data-avatar-aleatorio]')?.addEventListener('click', () => {
+    const sorteia = (lista) => lista[Math.floor(Math.random() * lista.length)].valor;
+    avatarCfg = normalizarAvatar({
+      corte: sorteia(OPCOES_AVATAR.corte),
+      barba: sorteia(OPCOES_AVATAR.barba),
+      sobrancelha: sorteia(OPCOES_AVATAR.sobrancelha),
+      pele: sorteia(OPCOES_AVATAR.pele),
+      cabelo: sorteia(OPCOES_AVATAR.cabelo),
+    });
+    pintarPreviewAvatar();
+  });
+
+  document.querySelector('[data-salvar-avatar]')?.addEventListener('click', async (evento) => {
+    const botao = evento.currentTarget;
+    definirCarregando(botao, true, 'Salvando...');
+    try {
+      const dados = await api.put('/usuario/avatar', { avatar: avatarCfg });
+      definirUsuario(dados.usuario);
+      avatarCfg = normalizarAvatar(dados.usuario?.avatar);
+      toast(dados.mensagem || 'Avatar salvo.', 'sucesso');
+      window.dispatchEvent(new CustomEvent('bcity:usuario'));
+      pintarPreviewAvatar();
+    } catch (erro) {
+      toast(erro.message, 'erro');
+    } finally {
+      definirCarregando(botao, false);
+    }
+  });
+}
+
 async function iniciar() {
   const alvo = document.getElementById('usuario-conteudo');
   if (!alvo) return;
@@ -149,6 +250,7 @@ async function iniciar() {
   try {
     const [perfil, lista] = await Promise.all([api.get('/usuario'), api.get('/agendamentos/meus')]);
     definirUsuario(perfil.usuario);
+    avatarCfg = normalizarAvatar(perfil.usuario?.avatar);
     resumo = perfil.resumo;
     agendamentos = lista.agendamentos || [];
   } catch (erro) {
@@ -167,6 +269,7 @@ async function iniciar() {
         <button type="button" class="painel-aba ${aba === 'proximos' ? 'is-active' : ''}" data-aba="proximos">${icone('calendar')} Próximos</button>
         <button type="button" class="painel-aba ${aba === 'historico' ? 'is-active' : ''}" data-aba="historico">${icone('clock')} Histórico</button>
         <button type="button" class="painel-aba ${aba === 'perfil' ? 'is-active' : ''}" data-aba="perfil">${icone('user')} Meus dados</button>
+        <button type="button" class="painel-aba ${aba === 'avatar' ? 'is-active' : ''}" data-aba="avatar">${icone('sparkles')} Meu avatar</button>
       </div>
       <div id="aba-conteudo">${renderAba(agendamentos, aba, resumo)}</div>`;
 
@@ -185,6 +288,7 @@ async function iniciar() {
     });
     alvo.querySelector('#form-perfil')?.addEventListener('submit', salvarPerfil);
     mascararTelefone(alvo.querySelector('#perfil-telefone'));
+    if (aba === 'avatar') ligarAvatarEditor();
   }
 
   async function sair() {
@@ -357,6 +461,3 @@ async function iniciar() {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);
 else iniciar();
-
-
-}

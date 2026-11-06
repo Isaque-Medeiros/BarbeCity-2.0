@@ -22,3 +22,7 @@ tmp/
 # Cobertura/testes
 coverage/
 
+# Ferramentas locais de análise e backups
+.rea-tools/
+.backup-*/
+

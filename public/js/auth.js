@@ -1,6 +1,30 @@
 import { api } from './api.js';
-import { definirUsuario } from './core.js';
+import { carregarConfig, definirUsuario, state } from './core.js';
 import { definirCarregando, lerQuery, toast } from './ui.js';
+
+/**
+ * O botão do Google só faz sentido quando o servidor tem as credenciais.
+ * Sem elas o clique terminava num redirecionamento de erro; agora o botão
+ * some e o usuário vê apenas e-mail/senha e código.
+ */
+async function ajustarDisponibilidadeGoogle() {
+  try {
+    const cfg = state.config?.recursos ? state.config : (await carregarConfig(true))?.config;
+    const ativo = cfg?.recursos?.google !== false;
+    if (ativo) return;
+    document.querySelectorAll('.btn-google').forEach((el) => {
+      el.hidden = true;
+      el.setAttribute('aria-hidden', 'true');
+      el.setAttribute('tabindex', '-1');
+    });
+    const divisor = document.querySelector('.auth-divisor');
+    if (divisor && /ou entre com e-mail/i.test(divisor.textContent || '')) {
+      divisor.textContent = 'entre com e-mail';
+    }
+  } catch {
+    /* sem configuração: mantém o botão como está */
+  }
+}
 
 const ERROS = {
   google_indisponivel: 'O login com Google ainda não está configurado. Use e-mail e senha ou o código por e-mail.',
@@ -234,6 +258,7 @@ function iniciar() {
   ligarCadastro();
   ligarRecuperacao();
   ligarSenhas();
+  ajustarDisponibilidadeGoogle();
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);

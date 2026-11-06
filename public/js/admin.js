@@ -13,7 +13,8 @@ import {
   statusInfo,
 } from './core.js';
 import { abrirModal, confirmar, definirCarregando, toast } from './ui.js';
-import { avatarMini } from './avatar-barbearia.js';
+import { avatarMini, chipsServico } from './avatar-barbearia.js';
+import { avatarMini3D } from './avatar3d.js';
 
 const SECOES = [
   { id: 'dashboard', rotulo: 'Visão geral', icone: 'home' },
@@ -224,21 +225,22 @@ async function secaoAgendamentos() {
             return `
               <tr>
                 <td>
-                  <strong>${escapar(item.nome_cliente)}</strong>
-                  <div class="muted" style="font-size:.72rem;letter-spacing:1px;">${escapar(item.codigo_publico)}</div>
+                  <div class="cliente-celula">
+                    ${item.usuario_avatar ? avatarMini3D(item.usuario_avatar, { tamanho: 30 }) : ''}
+                    <div>
+                      <strong>${escapar(item.nome_cliente)}</strong>
+                      <div class="muted" style="font-size:.72rem;letter-spacing:1px;">${escapar(item.codigo_publico)}</div>
+                    </div>
+                  </div>
                 </td>
-                <td>
+                <td class="celula-contato">
                   <div>${escapar(formatarTelefone(item.telefone_cliente))}</div>
                   <div class="muted" style="font-size:.75rem;">${escapar(item.email_cliente || 'sem e-mail')}</div>
                 </td>
                 <td>
-                  <div class="servico-celula">
-                    ${avatarMini(item)}
-                    <div>
-                      <div>${escapar(item.servico_nome)}</div>
-                      ${item.adicionais?.length ? `<div class="muted" style="font-size:.72rem;">+ ${escapar(item.adicionais.map((extra) => extra.nome).join(' + '))}</div>` : ''}
-                    </div>
-                  </div>
+                  ${chipsServico(item)}
+                  <div class="muted" style="font-size:.78rem;margin-top:6px;">${escapar(item.servico_nome)}</div>
+                  ${item.adicionais?.length ? `<div class="muted" style="font-size:.72rem;">+ ${escapar(item.adicionais.map((extra) => extra.nome).join(' + '))}</div>` : ''}
                 </td>
                 <td>
                   <div>${escapar(formatarDataHora(item.data_hora_inicio))}</div>

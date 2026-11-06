@@ -260,6 +260,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS temas_site_ativo_uidx ON temas_site (status) W
 -- ============================================================
 ALTER TABLE servicos ADD COLUMN IF NOT EXISTS avatar_traits JSONB;
 
+-- Avatar criado pelo próprio cliente (corte, barba, pele, cor)
+ALTER TABLE usuarios ADD COLUMN IF NOT EXISTS avatar JSONB;
+
 ALTER TABLE agendamentos
   ADD COLUMN IF NOT EXISTS valor_desconto NUMERIC(10, 2) NOT NULL DEFAULT 0,
   ADD COLUMN IF NOT EXISTS promocao_rotulo TEXT,

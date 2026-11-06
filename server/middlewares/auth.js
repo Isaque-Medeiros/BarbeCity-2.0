@@ -48,7 +48,7 @@ export async function carregarUsuario(req, res, next) {
     const resultado = await pool.query(
       `SELECT s.id AS sessao_id, s.expira_em, s.ultimo_uso_em,
               u.id, u.nome, u.email, u.telefone, u.senha_hash, u.google_id,
-              u.role, u.email_verificado, u.ativo, u.criado_em, u.ultimo_login_em
+              u.role, u.email_verificado, u.ativo, u.avatar, u.criado_em, u.ultimo_login_em
        FROM sessoes s
        JOIN usuarios u ON u.id = s.usuario_id
        WHERE s.token_hash = $1 AND s.expira_em > now()
@@ -73,6 +73,7 @@ export async function carregarUsuario(req, res, next) {
       role: linha.role,
       email_verificado: linha.email_verificado,
       ativo: linha.ativo,
+      avatar: linha.avatar,
       criado_em: linha.criado_em,
       ultimo_login_em: linha.ultimo_login_em,
     };

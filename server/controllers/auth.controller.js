@@ -33,6 +33,21 @@ async function usuarioPorId(id) {
   return resultado.rows[0] || null;
 }
 
+/**
+ * Endereço de callback do Google.
+ *
+ * Se GOOGLE_REDIRECT_URI estiver definido, ele manda (útil para domínio próprio).
+ * Caso contrário derivamos da própria requisição: assim funciona em localhost,
+ * em preview da Vercel e no domínio final sem trocar variável de ambiente.
+ */
+function redirectUriDoGoogle(req) {
+  if (config.google.redirectUri) return config.google.redirectUri;
+  const host = req.get('host') || 'localhost:3000';
+  const local = /^(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/.test(host);
+  const protocolo = local ? req.protocol || 'http' : 'https';
+  return `${protocolo}://${host}/api/auth/google/callback`;
+}
+
 async function concluirLogin(res, usuario) {
   await pool.query('UPDATE usuarios SET ultimo_login_em = now() WHERE id = $1', [usuario.id]);
   const vinculados = await vincularAgendamentos(usuario.id, usuario.email);
@@ -178,7 +193,7 @@ export const googleIniciar = asyncHandler(async (req, res) => {
     path: '/',
     maxAge: 10 * 60 * 1000,
   });
-  return res.redirect(urlConsentimento(state));
+  return res.redirect(urlConsentimento(state, redirectUriDoGoogle(req)));
 });
 
 export const googleCallback = asyncHandler(async (req, res) => {
@@ -193,7 +208,7 @@ export const googleCallback = asyncHandler(async (req, res) => {
     }
     if (!googleConfigurado()) return res.redirect('/login.html?erro=google_indisponivel');
 
-    const tokens = await trocarCodigoPorToken(String(code));
+    const tokens = await trocarCodigoPorToken(String(code), redirectUriDoGoogle(req));
     const perfil = await obterPerfilGoogle(tokens.access_token);
     const email = normalizarEmail(perfil.email);
     if (!emailValido(email)) return res.redirect('/login.html?erro=google_email');

@@ -1,4 +1,5 @@
 import { asyncHandler } from '../utils/http.js';
+import { recursos } from '../config/env.js';
 import { configPublica, carregarConfiguracoes, promocaoPublica } from '../utils/serializadores.js';
 import { varios } from '../config/db.js';
 import { carregarPromocoesAtivas } from '../services/promocoes.service.js';
@@ -29,6 +30,9 @@ export const publica = asyncHandler(async (req, res) => {
           }
         : null,
       promocoesAtivas: promocoes.map((promocao) => promocaoPublica(promocao)),
+      recursos: {
+        google: recursos.googleAtivo,
+      },
     },
     horarios: horarios.map((linha) => ({
       diaSemana: Number(linha.dia_semana),
@@ -36,6 +40,7 @@ export const publica = asyncHandler(async (req, res) => {
       fechamento: String(linha.fechamento).slice(0, 5),
       intervaloMin: linha.intervalo_min,
       ativo: Boolean(linha.ativo),
-    })),
+    }))
+      .filter(Boolean),
   });
 });

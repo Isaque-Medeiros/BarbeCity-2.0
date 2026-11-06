@@ -2,6 +2,7 @@ import { pool } from '../config/db.js';
 import { config } from '../config/env.js';
 import { aplicarDesconto, statusPromocao } from './promocoes.js';
 import { avatarDoServico } from './avatar.js';
+import { avatarClientePublico } from './avatar-cliente.js';
 
 /**
  * Converte as linhas do banco em objetos JSON amigáveis para o front-end.
@@ -18,6 +19,7 @@ export function usuarioPublico(usuario) {
     ativo: Boolean(usuario.ativo),
     temSenha: Boolean(usuario.senha_hash),
     temGoogle: Boolean(usuario.google_id),
+    avatar: avatarClientePublico(usuario.avatar),
     criadoEm: usuario.criado_em,
     ultimoLoginEm: usuario.ultimo_login_em,
   };

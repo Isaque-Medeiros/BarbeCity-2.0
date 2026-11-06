@@ -7,6 +7,7 @@ const router = Router();
 router.use(requireAuth);
 router.get('/', usuario.perfil);
 router.put('/', usuario.atualizarPerfil);
+router.put('/avatar', usuario.atualizarAvatar);
 router.put('/senha', usuario.alterarSenha);
 router.delete('/', usuario.excluirConta);
 

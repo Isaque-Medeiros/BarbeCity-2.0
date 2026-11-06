@@ -1,6 +1,7 @@
 import { pool } from '../config/db.js';
 import { asyncHandler, conflito, invalido, naoAutorizado } from '../utils/http.js';
 import { conferirSenha, gerarHashSenha } from '../utils/senha.js';
+import { normalizarAvatarCliente } from '../utils/avatar-cliente.js';
 import { usuarioPublico } from '../utils/serializadores.js';
 import { textoObrigatorio, validarSenha, validarTelefone } from '../utils/validacao.js';
 import { encerrarSessao } from '../middlewares/auth.js';
@@ -55,6 +56,15 @@ export const alterarSenha = asyncHandler(async (req, res) => {
   await pool.query('UPDATE usuarios SET senha_hash = $1 WHERE id = $2', [hash, req.usuario.id]);
   await pool.query('DELETE FROM sessoes WHERE usuario_id = $1 AND id <> $2', [req.usuario.id, req.sessao.id]);
   return res.json({ mensagem: 'Senha definida com sucesso.' });
+});
+
+export const atualizarAvatar = asyncHandler(async (req, res) => {
+  const avatar = normalizarAvatarCliente(req.body?.avatar ?? req.body);
+  const atualizado = await pool.query('UPDATE usuarios SET avatar = $1 WHERE id = $2 RETURNING *', [
+    avatar,
+    req.usuario.id,
+  ]);
+  return res.json({ usuario: usuarioPublico(atualizado.rows[0]), avatar, mensagem: 'Avatar atualizado.' });
 });
 
 export const excluirConta = asyncHandler(async (req, res) => {

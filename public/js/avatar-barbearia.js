@@ -1,4 +1,29 @@
-import { escapar, formatarDataHora } from './core.js';
+import { escapar, formatarDataHora, icone } from './core.js';
+
+const CHIPS = [
+  ['cabelo', 'scissors', 'Cabelo'],
+  ['barba', 'razor', 'Barba'],
+  ['sobrancelha', 'eyebrow', 'Sobrancelha'],
+  ['luzes', 'sparkles', 'Luzes'],
+  ['tratamento', 'droplet', 'Tratamento'],
+];
+
+/**
+ * Etiquetas curtas do que o cliente vai fazer, para o barbeiro bater o olho
+ * e já saber: cabelo, barba ou sobrancelha — sem ler o nome do serviço.
+ */
+export function chipsServico(item = {}) {
+  const traits = detectarTraits({
+    nome: item.servico_nome ?? item.nome,
+    slug: item.servico_slug ?? item.slug,
+    icone: item.servico_icone ?? item.icone,
+  });
+  const ativos = CHIPS.filter(([chave]) => traits[chave]);
+  if (!ativos.length) return '';
+  return `<span class="servico-chips">${ativos
+    .map(([chave, nome, rotulo]) => `<span class="servico-chip servico-chip-${chave}">${icone(nome)}${rotulo}</span>`)
+    .join('')}</span>`;
+}
 
 /**
  * Avatar de barbearia em SVG puro.
