@@ -151,7 +151,26 @@ export const OPCOES_AVATAR = {
 
 /* ---------------------------------------------------------------- cabelo */
 
-function cabelo(corte, cor) {
+/* Cabelo em duas camadas: o de trás fica atrás da cabeça (nunca cobre o rosto)
+   e o da frente é a "tampa" que acompanha o topo do crânio. */
+
+function cabeloTras(corte, cor) {
+  switch (corte) {
+    case 'longo':
+      return `<path d="M60 120 C60 74 92 46 132 46 C172 46 204 74 204 120 C204 162 200 202 194 236 L70 236 C64 202 60 162 60 120 Z" fill="${cor.base}"/>`;
+
+    case 'franja':
+      return `<path d="M62 120 C62 76 94 48 132 48 C170 48 202 76 202 120 C202 152 198 178 194 198 L70 198 C66 178 62 152 62 120 Z" fill="${cor.base}"/>`;
+
+    case 'coque':
+      return `<circle cx="132" cy="46" r="20" fill="${cor.base}"/><circle cx="126" cy="42" r="7" fill="${cor.sombra}" opacity=".45"/>`;
+
+    default:
+      return '';
+  }
+}
+
+function cabeloFrente(corte, cor) {
   const { base, sombra } = cor;
 
   switch (corte) {
@@ -160,65 +179,61 @@ function cabelo(corte, cor) {
 
     case 'social':
       return `
-        <path d="M70 128 C70 84 96 58 132 58 C168 58 194 84 194 128 C190 108 178 94 164 88 C172 76 168 64 156 60 C140 54 118 58 104 68 C88 80 76 100 72 118 Z" fill="${base}"/>
-        <path d="M104 68 C90 80 78 100 74 118 C72 104 78 88 88 78 Z" fill="${sombra}" opacity=".5"/>`;
+        <path d="M70 126 C70 84 96 58 132 58 C168 58 194 84 194 126 C190 104 178 92 160 88 C150 84 136 84 124 88 C108 94 92 108 70 126 Z" fill="${base}"/>
+        <path d="M124 88 C108 94 92 108 74 122 C86 104 102 94 118 90 Z" fill="${sombra}" opacity=".5"/>`;
 
     case 'moicano':
       return `
-        <path d="M126 40 C144 40 154 56 156 76 C158 94 148 104 132 104 C116 104 106 94 108 76 C110 56 120 40 126 40 Z" fill="${base}"/>
-        <path d="M132 88 C120 88 112 80 110 68 C116 78 124 84 134 84 Z" fill="${sombra}"/>`;
+        <path d="M124 44 C142 44 152 58 154 78 C156 94 146 104 132 104 C118 104 108 94 110 78 C112 58 118 44 124 44 Z" fill="${base}"/>
+        <path d="M132 92 C122 92 114 84 112 72 C118 82 126 88 134 88 Z" fill="${sombra}"/>`;
 
     case 'topete':
       return `
-        <path d="M70 128 C70 92 88 68 112 60 C122 50 142 50 154 60 C178 72 192 96 194 128 C188 108 172 94 152 90 C140 88 124 88 112 90 C92 94 76 108 70 128 Z" fill="${base}"/>
-        <path d="M112 60 C122 50 142 50 154 60 C146 56 134 54 124 56 Z" fill="${sombra}" opacity=".5"/>`;
+        <path d="M70 126 C70 92 88 68 112 60 C122 50 142 50 154 60 C178 72 192 96 194 126 C188 108 172 96 152 92 C140 90 124 90 112 92 C92 96 76 108 70 126 Z" fill="${base}"/>
+        <path d="M120 58 C130 52 144 52 154 60 C144 57 132 56 122 58 Z" fill="${sombra}" opacity=".5"/>`;
 
     case 'raspado':
       return `
-        <path d="M72 126 C72 88 98 62 132 62 C166 62 192 88 192 126 C188 110 174 98 156 94 C144 92 120 92 108 94 C90 98 76 110 72 126 Z" fill="${base}" opacity=".9"/>
-        <path d="M96 74 C108 66 122 64 134 66" stroke="${sombra}" stroke-width="3" fill="none" opacity=".35" stroke-linecap="round"/>`;
+        <path d="M72 126 C72 88 98 62 132 62 C166 62 192 88 192 126 C188 110 174 98 156 94 C144 92 120 92 108 94 C90 98 76 110 72 126 Z" fill="${base}" opacity=".92"/>
+        <path d="M98 76 C110 68 124 66 136 68" stroke="${sombra}" stroke-width="3" fill="none" opacity=".3" stroke-linecap="round"/>`;
 
     case 'franja':
       return `
-        <path d="M68 130 C68 84 96 56 132 56 C168 56 196 84 196 130 C194 150 192 172 188 190 C182 172 178 152 176 132 L176 104 L88 104 L88 132 C86 152 82 172 76 190 C72 172 70 150 68 130 Z" fill="${base}"/>
-        <path d="M88 104 L176 104 C172 96 160 90 146 92 C136 84 118 84 108 92 C96 94 90 98 88 104 Z" fill="${sombra}" opacity=".45"/>`;
+        <path d="M70 126 C70 84 96 58 132 58 C168 58 194 84 194 126 C190 106 178 96 162 92 L102 92 C88 96 76 108 70 126 Z" fill="${base}"/>
+        <path d="M102 92 Q117 102 132 92 Q147 102 162 92" stroke="${sombra}" stroke-width="4" fill="none" opacity=".45" stroke-linecap="round"/>`;
 
     case 'coque':
       return `
-        <circle cx="132" cy="44" r="19" fill="${base}"/>
-        <circle cx="126" cy="40" r="7" fill="${sombra}" opacity=".45"/>
-        <path d="M70 128 C70 84 96 58 132 58 C168 58 194 84 194 128 C188 106 172 92 152 88 C140 86 124 86 112 88 C92 92 76 106 70 128 Z" fill="${base}"/>
-        <path d="M110 62 C118 56 130 54 140 58" stroke="${sombra}" stroke-width="3" fill="none" opacity=".4" stroke-linecap="round"/>`;
+        <path d="M70 126 C70 84 96 58 132 58 C168 58 194 84 194 126 C189 104 176 92 158 88 C146 86 118 86 106 88 C88 92 75 104 70 126 Z" fill="${base}"/>
+        <path d="M112 64 C120 60 132 58 142 62" stroke="${sombra}" stroke-width="3" fill="none" opacity=".4" stroke-linecap="round"/>`;
 
     case 'dreads':
       return `
-        <path d="M70 128 C70 84 96 58 132 58 C168 58 194 84 194 128 C188 106 172 92 152 88 C140 86 124 86 112 88 C92 92 76 106 70 128 Z" fill="${base}"/>
-        <g stroke="${sombra}" stroke-width="7" stroke-linecap="round" opacity=".85">
-          <path d="M86 96 L82 118"/><path d="M104 82 L100 106"/><path d="M122 76 L120 100"/>
-          <path d="M142 76 L144 100"/><path d="M160 82 L164 106"/><path d="M178 96 L182 118"/>
+        <path d="M70 126 C70 84 96 58 132 58 C168 58 194 84 194 126 C189 104 176 92 158 88 C146 86 118 86 106 88 C88 92 75 104 70 126 Z" fill="${base}"/>
+        <g stroke="${sombra}" stroke-width="6" stroke-linecap="round" opacity=".8">
+          <path d="M92 100 L94 82"/><path d="M110 92 L112 74"/><path d="M130 88 L130 70"/>
+          <path d="M150 90 L152 72"/><path d="M168 98 L170 80"/>
         </g>`;
 
     case 'longo':
       return `
-        <path d="M70 128 C70 84 96 58 132 58 C168 58 194 84 194 128 C194 160 192 196 186 226 C178 208 174 184 174 160 C172 128 158 112 132 112 C106 112 92 128 90 160 C90 184 86 208 78 226 C72 196 70 160 70 128 Z" fill="${base}"/>
-        <path d="M88 120 C84 156 84 192 90 218 C86 190 84 154 88 120 Z" fill="${sombra}" opacity=".55"/>
-        <path d="M176 120 C180 156 180 192 174 218 C178 190 180 154 176 120 Z" fill="${sombra}" opacity=".55"/>`;
+        <path d="M70 126 C70 84 96 58 132 58 C168 58 194 84 194 126 C189 104 176 92 158 88 C146 86 118 86 106 88 C88 92 75 104 70 126 Z" fill="${base}"/>
+        <path d="M106 88 C90 94 78 108 72 124 C82 106 94 96 108 92 Z" fill="${sombra}" opacity=".45"/>`;
 
     case 'cacheado':
       return `
         <g fill="${base}">
-          <circle cx="96" cy="104" r="20"/><circle cx="114" cy="80" r="22"/><circle cx="138" cy="72" r="22"/>
-          <circle cx="164" cy="82" r="21"/><circle cx="182" cy="106" r="19"/><circle cx="80" cy="126" r="15"/>
-          <circle cx="190" cy="128" r="15"/>
+          <circle cx="102" cy="92" r="17"/><circle cx="118" cy="72" r="19"/><circle cx="140" cy="66" r="20"/>
+          <circle cx="162" cy="74" r="18"/><circle cx="178" cy="94" r="16"/>
         </g>
-        <g fill="${sombra}" opacity=".45">
-          <circle cx="104" cy="112" r="10"/><circle cx="150" cy="92" r="9"/><circle cx="176" cy="114" r="8"/>
+        <g fill="${sombra}" opacity=".4">
+          <circle cx="110" cy="98" r="8"/><circle cx="146" cy="80" r="8"/><circle cx="168" cy="96" r="7"/>
         </g>`;
 
     default: // degrade
       return `
-        <path d="M70 128 C70 84 96 58 132 58 C168 58 194 84 194 128 C188 106 172 92 152 88 C140 86 124 86 112 88 C92 92 76 106 70 128 Z" fill="${base}"/>
-        <path d="M76 122 C82 106 92 96 106 92 C94 100 84 110 78 124 Z" fill="${sombra}" opacity=".55"/>`;
+        <path d="M70 126 C70 84 96 58 132 58 C168 58 194 84 194 126 C189 104 176 92 158 88 C146 86 118 86 106 88 C88 92 75 104 70 126 Z" fill="${base}"/>
+        <path d="M78 120 C84 104 94 94 108 90 C96 98 86 108 80 122 Z" fill="${sombra}" opacity=".5"/>`;
   }
 }
 
@@ -345,6 +360,9 @@ export function avatarSVG3D(entrada, { tamanho = 160, rotulo = '', fundo = true 
     <g clip-path="url(#recorte-${id})">
       ${mostrarFundo ? `<circle cx="132" cy="140" r="132" fill="${FUNDO_CIRCULO}"/>` : ''}
 
+      <!-- cabelo de trás: fica atrás da cabeça e dos ombros -->
+      ${cabeloTras(cfg.corte, cor)}
+
       <!-- ombros / camisa -->
       <path d="M8 280 C14 246 44 226 78 218 L186 218 C220 226 250 246 256 280 Z" fill="${roupa.base}"/>
       <path d="M118 220 L132 244 L146 220 Z" fill="#E6E6E6"/>
@@ -362,7 +380,7 @@ export function avatarSVG3D(entrada, { tamanho = 160, rotulo = '', fundo = true 
       <path d="M132 54 C176 54 196 84 196 126 C196 168 170 196 132 196 C94 196 68 168 68 126 C68 84 88 54 132 54 Z" fill="${pele.base}"/>
       <path d="M68 126 C68 168 94 196 132 196 C108 186 92 164 88 138 C84 110 94 84 116 68 C86 76 68 96 68 126 Z" fill="${pele.sombra}" opacity=".32"/>
 
-      ${cabelo(cfg.corte, cor)}
+      ${cabeloFrente(cfg.corte, cor)}
       ${barba(cfg.barba, cor, pele)}
       ${sobrancelhas(cfg.sobrancelha, cor)}
       ${olhos()}

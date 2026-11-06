@@ -14,7 +14,7 @@ import {
 } from './core.js';
 import { abrirModal, confirmar, definirCarregando, estadoVazio, lerQuery, mascararTelefone, toast } from './ui.js';
 import { stickerCard } from './avatar-barbearia.js';
-import { OPCOES_AVATAR, avatarSVG3D, normalizarAvatar, rotuloAvatar } from './avatar3d.js?v=2026.17';
+import { OPCOES_AVATAR, avatarSVG3D, normalizarAvatar, rotuloAvatar } from './avatar3d.js?v=2026.18';
 
 function separarAgendamentos(agendamentos) {
   const agora = Date.now();

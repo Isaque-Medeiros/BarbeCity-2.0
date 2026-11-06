@@ -1,6 +1,6 @@
 import { carregarConfig, carregarSessao, escapar, icone, state } from './core.js';
 import { aplicarTemaSite } from './tema-site.js';
-import { avatarMini3D } from './avatar3d.js?v=2026.17';
+import { avatarMini3D } from './avatar3d.js?v=2026.18';
 
 const PADRAO = {
   nome: 'Barbe City Jaraguá',
